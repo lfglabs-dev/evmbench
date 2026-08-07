@@ -34,7 +34,7 @@ export default function Page() {
   const router = useRouter()
   const { files, packageName, setUpload, clearUpload } = useUploadStore()
   const [openaiKey, setOpenaiKey] = useSessionStorage("evmbench.openaiKey", "")
-  const [model, setModel] = useState("codex-gpt-5.2")
+  const [model, setModel] = useState("codex-gpt-5.6-sol")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [recentJobs, setRecentJobs] = useLocalStorage<RecentJob[]>(
@@ -224,6 +224,9 @@ export default function Page() {
                       <SelectValue placeholder="Select model" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="codex-gpt-5.6-sol">
+                        codex-gpt-5.6-sol
+                      </SelectItem>
                       <SelectItem value="codex-gpt-5.2">
                         codex-gpt-5.2
                       </SelectItem>

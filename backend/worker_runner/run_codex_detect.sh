@@ -66,6 +66,7 @@ fi
 
 timeout --signal=KILL "${TIMEOUT_SECONDS}s" codex exec \
   --model "${CODEX_MODEL}" \
+  --config web_search=disabled \
   --dangerously-bypass-approvals-and-sandbox \
   --skip-git-repo-check \
   --experimental-json \

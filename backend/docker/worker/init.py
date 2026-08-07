@@ -27,6 +27,7 @@ RESULTSVC_PORT = os.getenv('RESULTSVC_PORT', '8083')
 RESULTSVC_JOB_TOKEN = os.getenv('RESULTSVC_JOB_TOKEN', '')
 OAI_PROXY_BASE_URL = os.getenv('OAI_PROXY_BASE_URL', '').strip()
 OAI_PROXY_WIRE_API = os.getenv('OAI_PROXY_WIRE_API', 'responses').strip()
+CODEX_REASONING_EFFORT = os.getenv('EVM_BENCH_CODEX_REASONING_EFFORT', 'low').strip().lower()
 
 AGENT_DIR = Path(os.getenv('AGENT_DIR') or str(Path.home()))
 AUDIT_DIR = Path(os.getenv('AUDIT_DIR') or str(AGENT_DIR / 'audit'))
@@ -103,8 +104,12 @@ def _write_codex_proxy_config(*, home: Path) -> None:
     config_dir = home / '.codex'
     config_dir.mkdir(parents=True, exist_ok=True)
     config_path = config_dir / 'config.toml'
+    if CODEX_REASONING_EFFORT not in {'minimal', 'low', 'medium', 'high', 'xhigh'}:
+        msg = f'Invalid EVM_BENCH_CODEX_REASONING_EFFORT={CODEX_REASONING_EFFORT}'
+        raise RuntimeError(msg)
     config = (
-        'model_provider = "proxy"\n\n'
+        'model_provider = "proxy"\n'
+        f'model_reasoning_effort = "{CODEX_REASONING_EFFORT}"\n\n'
         '[model_providers.proxy]\n'
         'name = "proxy"\n'
         f'base_url = "{base_url}"\n'
