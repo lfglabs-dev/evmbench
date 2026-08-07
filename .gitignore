@@ -1,5 +1,8 @@
 .DS_Store
 
+# Local, build-time selection of one third-party audit skill.
+/backend/worker_runner/active_skill/
+
 .idea/**
 /.envrc
 

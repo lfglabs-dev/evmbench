@@ -1,4 +1,4 @@
-.PHONY: help backend-lint backend-typecheck frontend-install frontend-build docker-build-images
+.PHONY: help backend-lint backend-typecheck frontend-install frontend-build docker-build-images prepare-skill
 
 help:
 	@echo "evmbench common tasks"
@@ -8,6 +8,11 @@ help:
 	@echo "  frontend-install        - bun install (frontend/)"
 	@echo "  frontend-build          - bun run build (frontend/)"
 	@echo "  docker-build-images     - build base/worker/backend/frontend images"
+	@echo "  prepare-skill SKILL=... - stage raw or one local worker skill"
+
+prepare-skill:
+	@test -n "$(SKILL)" || (echo "usage: make prepare-skill SKILL=raw|/path/to/specific-skill" >&2; exit 2)
+	./backend/worker_runner/prepare-skill "$(SKILL)"
 
 backend-lint:
 	cd backend && uv sync --locked --dev

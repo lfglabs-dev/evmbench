@@ -11,6 +11,7 @@ set -euo pipefail
 # - CODEX_API_KEY: same value as OPENAI_API_KEY (kept aligned)
 # - CODEX_MODEL: resolved Codex model id
 # - EVM_BENCH_DETECT_MD: path to detect instructions markdown
+# - EVM_BENCH_ACTIVE_SKILL_NAME: optional build-staged audit skill name
 # - EVM_BENCH_CODEX_TIMEOUT_SECONDS: optional max runtime (default 10800)
 
 : "${AGENT_DIR:?missing AGENT_DIR}"
@@ -32,6 +33,25 @@ fi
 
 # Render instructions where Codex will read them.
 cp "${EVM_BENCH_DETECT_MD}" "${AGENT_DIR}/AGENTS.md"
+
+# Raw mode intentionally leaves the repo-owned prompt byte-for-byte unchanged.
+if [[ -n "${EVM_BENCH_ACTIVE_SKILL_NAME:-}" ]]; then
+  ACTIVE_SKILL_PATH="${AGENT_DIR}/.codex/skills/${EVM_BENCH_ACTIVE_SKILL_NAME}/SKILL.md"
+  if [[ ! -f "${ACTIVE_SKILL_PATH}" ]]; then
+    echo "missing active skill: ${ACTIVE_SKILL_PATH}" >&2
+    exit 2
+  fi
+  cat >> "${AGENT_DIR}/AGENTS.md" <<EOF
+
+## Active benchmark skill
+
+An audit skill named \`${EVM_BENCH_ACTIVE_SKILL_NAME}\` is installed at
+\`${ACTIVE_SKILL_PATH}\`. You MUST read the complete \`SKILL.md\` before auditing
+and use its methodology to find vulnerabilities. EVMbench's audit scope and JSON
+submission requirements in this AGENTS.md remain authoritative if they conflict
+with the skill.
+EOF
+fi
 
 # Ensure a clean output.
 rm -f "${SUBMISSION_DIR}/audit.md"
