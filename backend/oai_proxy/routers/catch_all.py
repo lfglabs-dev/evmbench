@@ -1,4 +1,5 @@
-from collections.abc import Iterable
+import json
+from collections.abc import AsyncIterator, Iterable
 from functools import lru_cache
 from urllib.parse import quote
 
@@ -10,8 +11,8 @@ from starlette.responses import Response, StreamingResponse
 from api.util.aes_gcm import decrypt_token, derive_key
 from oai_proxy.core.config import settings
 from oai_proxy.responses_chat_adapter import (
+    ChatStreamAccumulator,
     ResponsesTranslationError,
-    chat_to_responses_sse,
     responses_to_chat,
 )
 
@@ -133,7 +134,7 @@ async def _proxy_request(request: Request, path: str) -> StreamingResponse:
     )
 
 
-async def _adapt_responses_to_chat(request: Request) -> Response:
+async def _adapt_responses_to_chat(request: Request) -> Response:  # noqa: C901, PLR0915
     """Serve Codex's Responses wire API through a Chat Completions upstream."""
     token = _get_authorization_token(request)
     openai_key = _resolve_openai_key(token)
@@ -157,26 +158,57 @@ async def _adapt_responses_to_chat(request: Request) -> Response:
         upstream_base_url = f'{upstream_base_url}/v1'
     target_url = f'{upstream_base_url}/chat/completions'
 
-    async with httpx.AsyncClient(timeout=httpx.Timeout(60.0, read=None)) as client:
-        upstream = await client.post(target_url, headers=forward_headers, json=chat_payload)
+    client = httpx.AsyncClient(timeout=httpx.Timeout(60.0, read=None))
+    upstream_request = client.build_request('POST', target_url, headers=forward_headers, json=chat_payload)
+    try:
+        upstream = await client.send(upstream_request, stream=True)
+    except httpx.HTTPError as err:
+        await client.aclose()
+        raise HTTPException(status_code=502, detail=f'Chat Completions upstream failed: {err}') from err
 
     if upstream.is_error:
+        content = await upstream.aread()
+        await upstream.aclose()
+        await client.aclose()
         return Response(
-            upstream.content,
+            content,
             status_code=upstream.status_code,
             headers=_filter_headers(upstream.headers.items()),
             media_type=upstream.headers.get('content-type'),
         )
 
-    try:
-        upstream_payload = upstream.json()
-        if not isinstance(upstream_payload, dict):
-            msg = 'Chat Completions response must be a JSON object'
-            raise ResponsesTranslationError(msg)  # noqa: TRY301
-        body = chat_to_responses_sse(upstream_payload, tool_kinds)
-    except (ValueError, ResponsesTranslationError) as err:
-        raise HTTPException(status_code=502, detail=f'Invalid Chat Completions response: {err}') from err
-    return Response(body, media_type='text/event-stream')
+    accumulator = ChatStreamAccumulator(model=chat_payload['model'], tool_kinds=tool_kinds)
+
+    async def stream_responses() -> AsyncIterator[bytes]:
+        yield accumulator.created_sse()
+        done_marker = False
+        try:
+            async for line in upstream.aiter_lines():
+                if not line.startswith('data:'):
+                    continue
+                data = line.removeprefix('data:').strip()
+                if data == '[DONE]':
+                    done_marker = True
+                    break
+                chunk = json.loads(data)
+                if not isinstance(chunk, dict):
+                    msg = 'Chat Completions stream chunk must be a JSON object'
+                    raise ResponsesTranslationError(msg)  # noqa: TRY301
+                translated = accumulator.add_chunk(chunk)
+                # A comment still advances the downstream connection when a
+                # chunk contains only tool arguments or usage.
+                yield translated or b': chat-completions-chunk\n\n'
+            if not done_marker and not accumulator.finished:
+                msg = 'Chat Completions stream ended before a completion marker'
+                raise ResponsesTranslationError(msg)  # noqa: TRY301
+            yield accumulator.completed_sse()
+        except (httpx.HTTPError, ValueError, ResponsesTranslationError) as err:
+            yield accumulator.failed_sse(err)
+        finally:
+            await upstream.aclose()
+            await client.aclose()
+
+    return StreamingResponse(stream_responses(), media_type='text/event-stream')
 
 
 @router.api_route('/', methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'])

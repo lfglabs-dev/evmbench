@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import time
 import uuid
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, cast
 
 
@@ -163,7 +164,7 @@ def _responses_tools_to_chat(tools: object) -> tuple[list[dict[str, Any]], dict[
 
 
 def responses_to_chat(payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str, str]]:
-    """Convert a Codex Responses request into a non-streaming Chat request."""
+    """Convert a Codex Responses request into a streaming Chat request."""
     model = payload.get('model')
     if not isinstance(model, str) or not model:
         msg = 'Responses request is missing model'
@@ -174,7 +175,8 @@ def responses_to_chat(payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str
     request: dict[str, Any] = {
         'model': model,
         'messages': messages,
-        'stream': False,
+        'stream': True,
+        'stream_options': {'include_usage': True},
     }
     if tools:
         request['tools'] = tools
@@ -195,6 +197,16 @@ def responses_to_chat(payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str
     max_tokens = payload.get('max_output_tokens')
     if isinstance(max_tokens, int) and max_tokens > 0:
         request['max_completion_tokens'] = max_tokens
+
+    text = payload.get('text')
+    text_format = text.get('format') if isinstance(text, dict) else None
+    if isinstance(text_format, dict) and text_format.get('type') == 'json_schema':
+        json_schema = {
+            key: text_format[key]
+            for key in ('name', 'schema', 'strict')
+            if key in text_format
+        }
+        request['response_format'] = {'type': 'json_schema', 'json_schema': json_schema}
 
     return request, tool_kinds
 
@@ -231,9 +243,125 @@ def _sse(events: Iterable[dict[str, Any]]) -> bytes:
     return ''.join(chunks).encode()
 
 
+@dataclass
+class ChatStreamAccumulator:
+    """Aggregate Chat SSE deltas and emit the Responses subset Codex consumes."""
+
+    model: str
+    tool_kinds: dict[str, str]
+    response_id: str = field(default_factory=lambda: f'resp_chat_{uuid.uuid4().hex}')
+    created_at: int = field(default_factory=lambda: int(time.time()))
+    content_parts: list[str] = field(default_factory=list)
+    tool_calls: dict[int, dict[str, Any]] = field(default_factory=dict)
+    usage: dict[str, Any] | None = None
+    finished: bool = False
+
+    def created_sse(self) -> bytes:
+        return _sse([
+            {
+                'type': 'response.created',
+                'response': {
+                    'id': self.response_id,
+                    'object': 'response',
+                    'created_at': self.created_at,
+                    'status': 'in_progress',
+                    'model': self.model,
+                },
+            }
+        ])
+
+    def add_chunk(self, payload: dict[str, Any]) -> bytes:  # noqa: C901, PLR0912
+        if isinstance(payload.get('model'), str):
+            self.model = payload['model']
+        if isinstance(payload.get('created'), int):
+            self.created_at = payload['created']
+        if isinstance(payload.get('usage'), dict):
+            self.usage = payload['usage']
+
+        choices = payload.get('choices')
+        if choices in (None, []):
+            return b''
+        if not isinstance(choices, list) or not isinstance(choices[0], dict):
+            msg = 'Malformed Chat Completions stream choices'
+            raise ResponsesTranslationError(msg)
+        if choices[0].get('finish_reason') is not None:
+            self.finished = True
+        delta = choices[0].get('delta')
+        if not isinstance(delta, dict):
+            return b''
+
+        events: list[dict[str, Any]] = []
+        content = delta.get('content')
+        if isinstance(content, str) and content:
+            self.content_parts.append(content)
+            events.append({'type': 'response.output_text.delta', 'delta': content})
+
+        tool_deltas = delta.get('tool_calls')
+        if isinstance(tool_deltas, list):
+            for position, raw_tool_delta in enumerate(tool_deltas):
+                if not isinstance(raw_tool_delta, dict):
+                    continue
+                index = raw_tool_delta.get('index')
+                if not isinstance(index, int):
+                    index = position
+                accumulated = self.tool_calls.setdefault(
+                    index,
+                    {'id': '', 'type': 'function', 'function': {'name': '', 'arguments': ''}},
+                )
+                call_id = raw_tool_delta.get('id')
+                if isinstance(call_id, str) and call_id:
+                    accumulated['id'] = call_id
+                function_delta = raw_tool_delta.get('function')
+                if not isinstance(function_delta, dict):
+                    continue
+                for key in ('name', 'arguments'):
+                    fragment = function_delta.get(key)
+                    if isinstance(fragment, str):
+                        accumulated['function'][key] += fragment
+        return _sse(events)
+
+    def completed_sse(self) -> bytes:
+        message: dict[str, Any] = {
+            'role': 'assistant',
+            'content': ''.join(self.content_parts) or None,
+        }
+        if self.tool_calls:
+            message['tool_calls'] = [self.tool_calls[index] for index in sorted(self.tool_calls)]
+        payload: dict[str, Any] = {
+            'id': self.response_id,
+            'created': self.created_at,
+            'model': self.model,
+            'choices': [{'message': message}],
+        }
+        if self.usage is not None:
+            payload['usage'] = self.usage
+        return chat_to_responses_sse(
+            payload,
+            self.tool_kinds,
+            include_created=False,
+            response_id_override=self.response_id,
+        )
+
+    def failed_sse(self, error: Exception) -> bytes:
+        return _sse([
+            {
+                'type': 'response.failed',
+                'response': {
+                    'id': self.response_id,
+                    'object': 'response',
+                    'status': 'failed',
+                    'error': {'code': 'chat_stream_error', 'message': str(error)},
+                },
+            }
+        ])
+
+
 def chat_to_responses_sse(  # noqa: C901, PLR0912
     payload: dict[str, Any],
     tool_kinds: dict[str, str],
+    *,
+    include_created: bool = True,
+    response_id_override: str | None = None,
 ) -> bytes:
     """Convert one non-streaming Chat response into the SSE subset Codex consumes."""
     choices = payload.get('choices')
@@ -245,11 +373,12 @@ def chat_to_responses_sse(  # noqa: C901, PLR0912
         msg = 'Chat Completions response has no assistant message'
         raise ResponsesTranslationError(msg)
 
-    response_id = payload.get('id')
+    response_id = response_id_override or payload.get('id')
     if not isinstance(response_id, str) or not response_id:
         response_id = f'resp_chat_{uuid.uuid4().hex}'
-    events: list[dict[str, Any]] = [
-        {
+    events: list[dict[str, Any]] = []
+    if include_created:
+        events.append({
             'type': 'response.created',
             'response': {
                 'id': response_id,
@@ -258,8 +387,7 @@ def chat_to_responses_sse(  # noqa: C901, PLR0912
                 'status': 'in_progress',
                 'model': payload.get('model'),
             },
-        }
-    ]
+        })
 
     content = message.get('content')
     if isinstance(content, str) and content:
@@ -315,18 +443,19 @@ def chat_to_responses_sse(  # noqa: C901, PLR0912
                 }
             events.append({'type': 'response.output_item.done', 'item': item})
 
-    usage = _usage_to_responses(payload.get('usage'))
+    completed_response: dict[str, Any] = {
+        'id': response_id,
+        'object': 'response',
+        'status': 'completed',
+        'model': payload.get('model'),
+        'output': [],
+    }
+    if isinstance(payload.get('usage'), dict):
+        completed_response['usage'] = _usage_to_responses(payload['usage'])
     events.append(
         {
             'type': 'response.completed',
-            'response': {
-                'id': response_id,
-                'object': 'response',
-                'status': 'completed',
-                'model': payload.get('model'),
-                'output': [],
-                'usage': usage,
-            },
+            'response': completed_response,
         }
     )
     return _sse(events)

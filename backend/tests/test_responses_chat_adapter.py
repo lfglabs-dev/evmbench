@@ -15,6 +15,7 @@ import httpx
 from oai_proxy import app
 from oai_proxy.core.config import settings
 from oai_proxy.responses_chat_adapter import (
+    ChatStreamAccumulator,
     ResponsesTranslationError,
     chat_to_responses_sse,
     responses_to_chat,
@@ -26,16 +27,23 @@ class FakeChatHandler(BaseHTTPRequestHandler):
         length = int(self.headers.get('content-length', '0'))
         request = json.loads(self.rfile.read(length))
         self.server.last_request = request  # type: ignore[attr-defined]
-        body = json.dumps(
+        chunks = [
             {
                 'id': 'chatcmpl_integration',
                 'model': request['model'],
-                'choices': [{'message': {'role': 'assistant', 'content': 'adapter ok'}}],
+                'choices': [{'delta': {'role': 'assistant', 'content': 'adapter '}}],
+            },
+            {'choices': [{'delta': {'content': 'ok'}, 'finish_reason': 'stop'}]},
+            {
+                'choices': [],
                 'usage': {'prompt_tokens': 12, 'completion_tokens': 3, 'total_tokens': 15},
-            }
+            },
+        ]
+        body = ''.join(
+            [*(f'data: {json.dumps(chunk)}\n\n' for chunk in chunks), 'data: [DONE]\n\n']
         ).encode()
         self.send_response(200)
-        self.send_header('content-type', 'application/json')
+        self.send_header('content-type', 'text/event-stream')
         self.send_header('content-length', str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -47,7 +55,9 @@ class FakeChatHandler(BaseHTTPRequestHandler):
 def parse_sse(body: bytes) -> list[dict]:
     events = []
     for block in body.decode().strip().split('\n\n'):
-        data_line = next(line for line in block.splitlines() if line.startswith('data: '))
+        data_line = next((line for line in block.splitlines() if line.startswith('data: ')), None)
+        if data_line is None:
+            continue
         events.append(json.loads(data_line.removeprefix('data: ')))
     return events
 
@@ -96,7 +106,8 @@ class ResponsesToChatTests(unittest.TestCase):
         )
 
         self.assertEqual(request['model'], 'gpt-5.6-sol')
-        self.assertFalse(request['stream'])
+        self.assertTrue(request['stream'])
+        self.assertEqual(request['stream_options'], {'include_usage': True})
         self.assertEqual(request['reasoning_effort'], 'low')
         self.assertEqual(request['tool_choice'], 'auto')
         self.assertEqual(request['prompt_cache_key'], 'audit-1')
@@ -135,6 +146,56 @@ class ResponsesToChatTests(unittest.TestCase):
 
 
 class ChatToResponsesTests(unittest.TestCase):
+    def test_assembles_fragmented_parallel_tool_calls(self) -> None:
+        accumulator = ChatStreamAccumulator(
+            model='gpt-5.6-sol',
+            tool_kinds={'exec_command': 'function_call', 'apply_patch': 'custom_tool_call'},
+        )
+        accumulator.add_chunk(
+            {
+                'choices': [
+                    {
+                        'delta': {
+                            'tool_calls': [
+                                {
+                                    'index': 0,
+                                    'id': 'call_exec',
+                                    'function': {'name': 'exec_', 'arguments': '{"cmd":"'},
+                                },
+                                {
+                                    'index': 1,
+                                    'id': 'call_patch',
+                                    'function': {'name': 'apply_patch', 'arguments': '{"input":"patch'},
+                                },
+                            ]
+                        }
+                    }
+                ]
+            }
+        )
+        accumulator.add_chunk(
+            {
+                'choices': [
+                    {
+                        'delta': {
+                            'tool_calls': [
+                                {'index': 0, 'function': {'name': 'command', 'arguments': 'pwd"}'}},
+                                {'index': 1, 'function': {'arguments': ' text"}'}},
+                            ]
+                        }
+                    }
+                ],
+                'usage': {'prompt_tokens': 20, 'completion_tokens': 8, 'total_tokens': 28},
+            }
+        )
+        events = parse_sse(accumulator.completed_sse())
+        items = [event['item'] for event in events if event['type'] == 'response.output_item.done']
+        self.assertEqual(items[0]['name'], 'exec_command')
+        self.assertEqual(items[0]['arguments'], '{"cmd":"pwd"}')
+        self.assertEqual(items[1]['type'], 'custom_tool_call')
+        self.assertEqual(items[1]['input'], 'patch text')
+        self.assertEqual(events[-1]['response']['usage']['total_tokens'], 28)
+
     def test_translates_text_and_usage(self) -> None:
         events = parse_sse(
             chat_to_responses_sse(
@@ -239,7 +300,8 @@ class ProxyIntegrationTests(unittest.IsolatedAsyncioTestCase):
             request = server.last_request  # type: ignore[attr-defined]
             self.assertEqual(request['model'], 'gpt-5.6-sol')
             self.assertEqual(request['reasoning_effort'], 'low')
-            self.assertFalse(request['stream'])
+            self.assertTrue(request['stream'])
+            self.assertEqual(request['stream_options'], {'include_usage': True})
         finally:
             settings.OAI_PROXY_RESPONSES_MODE = old_mode
             settings.OAI_PROXY_UPSTREAM_BASE_URL = old_url
