@@ -85,7 +85,7 @@ uv run python -m evmbench.nano.entrypoint \
 
 - **Modes:** `evmbench.mode=detect|patch|exploit`
 - **Select a single audit:** `evmbench.audit=<audit_id>`
-- **Select a split:** `evmbench.audit_split=debug|detect-tasks|patch-tasks|exploit-tasks` (see `splits/`)
+- **Select a split:** `evmbench.audit_split=debug|detect-tasks|patch-tasks|exploit-tasks` (see `splits/`). In this checkout, `detect-tasks` is the curated ten-audit Hard-10 subset; see [`docs/hard-10.md`](docs/hard-10.md) for selection evidence and limitations.
 - **Hints:** `evmbench.hint_level=none|low|med|high|max`
 - **Gold solution:** `evmbench.apply_gold_solution=True` should score full points in each mode.
 - **Concurrency:** `runner.concurrency=<int>` (default 5)
