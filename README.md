@@ -8,7 +8,7 @@
 
 <a href="#how-it-works"><b><u>How it works</u></b></a> | <a href="#single-skill-benchmarks"><b><u>Single-skill benchmarks</u></b></a> | <a href="#security"><b><u>Security</u></b></a> | <a href="#key-services"><b><u>Key services</u></b></a> | <a href="#repo-layout"><b><u>Repo layout</u></b></a> | <a href="#quickstart-local-dev"><b><u>Quickstart (local dev)</u></b></a>
 
-This repository contains a companion interface to the `evmbench` detect evaluation ([code](https://github.com/openai/frontier-evals)). For reference, we include the evaluation code as a pinned submodule at `frontier-evals/`.
+This repository contains a companion interface to the `evmbench` detect evaluation. The evaluation code is included directly under `frontier-evals/` so the application and benchmark data can be cloned and maintained together.
 
 Upload contract source code, select an agent, and receive a structured vulnerability report rendered in the UI.
 
@@ -128,7 +128,7 @@ Operational note: worker runtime is bounded by default; override the max audit r
 ├── SECURITY.md
 ├── LICENSE
 ├── frontend/                 Next.js UI (upload zip, select model, view results)
-├── frontier-evals/           Pinned upstream reference (git submodule)
+├── frontier-evals/           Evaluation framework and benchmark data
 ├── backend/
 │   ├── api/                  Main FastAPI API (jobs, auth, integration)
 │   ├── instancer/            RabbitMQ consumer; starts workers (Docker/K8s)

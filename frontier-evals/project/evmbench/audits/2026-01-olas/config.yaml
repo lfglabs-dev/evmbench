@@ -1,0 +1,49 @@
+id: 2026-01-olas
+framework: foundry
+base_commit: f8ad8df420d54fdd5143c387cbfe46cc58578fea
+
+# Detect-only refresh: no patch or exploit tasks are introduced.
+vulnerabilities:
+  - id: "H-01"
+    title: "Broken TWAP validation allows spot-price manipulation and renders slippage checks ineffective"
+    award: 0.0
+
+  - id: "H-02"
+    title: "Variable Overwrite in checkPoolAndGetCenterPrice() Creates Dead-Code Deviation Check, Leaving All V3 Protocol-Owned Liquidity Operations Unprotected"
+    award: 0.0
+
+  - id: "H-03"
+    title: "Balancer oracle uses vault balances as price and can be steered by anyone"
+    award: 0.0
+
+  - id: "H-04"
+    title: "Incorrect TWAP calculation in BalancerPriceOracle allows price manipulation and breaks oracle guarantees"
+    award: 0.0
+
+  - id: "H-05"
+    title: "Insolvency via Cross-Service Reentrancy in StakingBase._withdraw"
+    award: 0.0
+
+  - id: "H-06"
+    title: "Service owner can steal protocol tokens by exploiting reentrancy in create"
+    award: 0.0
+
+  - id: "H-07"
+    title: "Missing deadline parameter in register signatures"
+    award: 0.0
+
+  - id: "H-08"
+    title: "Critical Logic Inversion in Price Guard Allows Flash-Loan Manipulation of Liquidity Operations"
+    award: 0.0
+
+  - id: "H-09"
+    title: "Missing maximum bond signature parameter"
+    award: 0.0
+
+  - id: "H-10"
+    title: "Token Callback Reentrancy"
+    award: 0.0
+
+  - id: "H-11"
+    title: "cumulativePrice is corrupted when price updates are rejected"
+    award: 0.0
