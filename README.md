@@ -6,7 +6,7 @@
 
 **evmbench is a benchmark and agent harness for finding and exploiting smart contract bugs.**
 
-<a href="#how-it-works"><b><u>How it works</u></b></a> | <a href="#security"><b><u>Security</u></b></a> | <a href="#key-services"><b><u>Key services</u></b></a> | <a href="#repo-layout"><b><u>Repo layout</u></b></a> | <a href="#quickstart-local-dev"><b><u>Quickstart (local dev)</u></b></a>
+<a href="#how-it-works"><b><u>How it works</u></b></a> | <a href="#single-skill-benchmarks"><b><u>Single-skill benchmarks</u></b></a> | <a href="#security"><b><u>Security</u></b></a> | <a href="#key-services"><b><u>Key services</u></b></a> | <a href="#repo-layout"><b><u>Repo layout</u></b></a> | <a href="#quickstart-local-dev"><b><u>Quickstart (local dev)</u></b></a>
 
 This repository contains a companion interface to the `evmbench` detect evaluation ([code](https://github.com/openai/frontier-evals)). For reference, we include the evaluation code as a pinned submodule at `frontier-evals/`.
 
@@ -51,6 +51,39 @@ Frontend (Next.js)
    - command wrapper: `backend/worker_runner/run_codex_detect.sh`
 5. The agent writes `submission/audit.md`. The worker validates that the output contains parseable JSON with `{"vulnerabilities": [...]}` and then uploads it to the Results Service.
 6. The frontend polls job status and renders the report with file navigation and annotations.
+
+## Single-skill benchmarks
+
+EVMbench supports a raw baseline and exactly one local Codex skill package per worker-image build. This lets you compare a selected methodology without changing the frontend, API, database, queue, scorer, or model configuration.
+
+The harness never downloads or vendors third-party skills. First clone or otherwise obtain a source repository yourself, inspect it, and select the **specific directory** that represents one package (not its repository root unless that root is itself one package). A valid package must contain exactly one `SKILL.md` at its root and no nested `SKILL.md` files. References and helper scripts may remain alongside it.
+
+### Run the raw benchmark
+
+```bash
+make prepare-skill SKILL=raw
+cd backend
+docker build -t evmbench/worker:latest -f docker/worker/Dockerfile .
+# Start the normal stack and submit the benchmark as usual.
+```
+
+Raw mode stages nothing and preserves the existing EVMbench prompt exactly.
+
+### Run a benchmark for a selected skill
+
+Repeat these steps independently for each selected QuillShield, Pashov, Cyfrin Solskill, or other compatible skill directory:
+
+```bash
+# Replace this with the single directory containing the chosen root SKILL.md.
+make prepare-skill SKILL=/absolute/path/to/specific-skill
+cd backend
+docker build -t evmbench/worker:latest -f docker/worker/Dockerfile .
+# Start the normal stack and submit the benchmark as usual.
+```
+
+The preparation command fails before image construction for missing, malformed, multi-skill, or symlink-containing inputs. For a staged package, the worker installs the complete package at `$HOME/.codex/skills/<skill-name>`, logs its name and any available source Git revision, and tells Codex to read the full `SKILL.md` and use its methodology. EVMbench's audit scope and JSON submission requirements continue to override any conflicting skill directions.
+
+Reset to `raw` before rebuilding the baseline image. The full worker-runner details are in [`backend/worker_runner/README.md`](backend/worker_runner/README.md).
 
 ## Security
 

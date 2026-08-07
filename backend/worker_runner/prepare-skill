@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+# ruff: noqa: T201, TRY003, EM101, EM102, S607, PLR2004
+"""Stage exactly one local Codex skill package for the next worker-image build."""
+
+from __future__ import annotations
+
+import json
+import re
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+
+RUNNER_DIR = Path(__file__).resolve().parent
+STAGING_DIR = RUNNER_DIR / 'active_skill'
+PACKAGE_DIR = STAGING_DIR / 'package'
+METADATA_PATH = STAGING_DIR / 'metadata.json'
+SKILL_NAME_RE = re.compile(r'^[a-z0-9][a-z0-9_-]{0,63}$')
+
+
+class SkillValidationError(ValueError):
+    """Raised when an input does not represent one safe skill package."""
+
+
+def _fail(message: str) -> None:
+    print(f'prepare-skill: error: {message}', file=sys.stderr)
+    raise SystemExit(2)
+
+
+def _skill_name(skill_md: Path) -> str:
+    """Read a conservative skill name from YAML frontmatter, if supplied."""
+    text = skill_md.read_text(encoding='utf-8')
+    match = re.match(r'^---\s*\n(.*?)\n---\s*\n', text, flags=re.DOTALL)
+    if not match:
+        return skill_md.parent.name
+
+    name_match = re.search(r'^name:\s*["\']?([^"\'\n]+?)["\']?\s*$', match.group(1), flags=re.MULTILINE)
+    return name_match.group(1).strip() if name_match else skill_md.parent.name
+
+
+def _validate_package(source: Path) -> tuple[Path, str]:
+    if not source.exists():
+        raise SkillValidationError(f'path does not exist: {source}')
+    if not source.is_dir():
+        raise SkillValidationError(f'path must be a skill directory: {source}')
+    if source.is_symlink():
+        raise SkillValidationError('skill directory must not be a symlink')
+
+    root_skill = source / 'SKILL.md'
+    if not root_skill.is_file():
+        raise SkillValidationError(f'missing root SKILL.md: {root_skill}')
+
+    skill_files = [path for path in source.rglob('SKILL.md') if path.is_file()]
+    if skill_files != [root_skill]:
+        rendered = ', '.join(str(path.relative_to(source)) for path in skill_files)
+        message = 'package must contain exactly one SKILL.md at its root; found: '
+        raise SkillValidationError(message + (rendered or 'none'))
+
+    for path in source.rglob('*'):
+        if path.is_symlink():
+            raise SkillValidationError(f'package must not contain symlinks: {path.relative_to(source)}')
+        if not path.is_dir() and not path.is_file():
+            raise SkillValidationError(f'package contains unsupported filesystem entry: {path.relative_to(source)}')
+
+    name = _skill_name(root_skill)
+    if not SKILL_NAME_RE.fullmatch(name):
+        raise SkillValidationError(
+            f'skill name must match {SKILL_NAME_RE.pattern!r}; got {name!r}. '
+            'Set a valid frontmatter name or rename the directory.'
+        )
+    return root_skill, name
+
+
+def _clear_staging() -> None:
+    if STAGING_DIR.exists():
+        shutil.rmtree(STAGING_DIR)
+
+
+def _repository_revision(source: Path) -> str | None:
+    """Return the source repository revision when the source is inside a Git worktree."""
+    result = subprocess.run(  # noqa: S603
+        ['git', '-C', str(source), 'rev-parse', 'HEAD'],
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+    revision = result.stdout.strip()
+    return revision if result.returncode == 0 and revision else None
+
+
+def main() -> None:
+    if len(sys.argv) != 2:
+        _fail('usage: prepare-skill raw | /path/to/specific-skill')
+
+    selection = sys.argv[1]
+    if selection == 'raw':
+        _clear_staging()
+        print('prepare-skill: raw mode selected; no benchmark skill will be installed')
+        return
+
+    source_input = Path(selection).expanduser()
+    if source_input.is_symlink():
+        _clear_staging()
+        _fail('skill directory must not be a symlink')
+    source = source_input.resolve()
+    try:
+        root_skill, skill_name = _validate_package(source)
+    except (OSError, UnicodeDecodeError, SkillValidationError) as err:
+        # Do not leave a previous treatment staged after a rejected selection.
+        # Otherwise an operator could build a worker that silently uses the old
+        # skill after this command has failed.
+        _clear_staging()
+        _fail(str(err))
+
+    _clear_staging()
+    PACKAGE_DIR.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(source, PACKAGE_DIR, symlinks=False)
+    METADATA_PATH.write_text(
+        json.dumps(
+            {
+                'name': skill_name,
+                'repository_revision': _repository_revision(source),
+                'source_path': str(source),
+                'skill_md': str(root_skill.relative_to(source)),
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + '\n',
+        encoding='utf-8',
+    )
+    print(f'prepare-skill: staged skill {skill_name!r} from {source}')
+
+
+if __name__ == '__main__':
+    main()

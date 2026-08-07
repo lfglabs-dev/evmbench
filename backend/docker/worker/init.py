@@ -6,6 +6,7 @@ except ImportError:
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import tarfile
@@ -39,6 +40,50 @@ RUNNER_DIR = Path(os.getenv('EVM_BENCH_RUNNER_DIR') or '/opt/evmbench/worker_run
 DETECT_MD_PATH = RUNNER_DIR / 'detect.md'
 MODEL_MAP_PATH = RUNNER_DIR / 'model_map.json'
 CODEX_RUNNER_SH = RUNNER_DIR / 'run_codex_detect.sh'
+ACTIVE_SKILL_DIR = RUNNER_DIR / 'active_skill'
+ACTIVE_SKILL_PACKAGE_DIR = ACTIVE_SKILL_DIR / 'package'
+ACTIVE_SKILL_METADATA_PATH = ACTIVE_SKILL_DIR / 'metadata.json'
+SKILL_NAME_RE = re.compile(r'^[a-z0-9][a-z0-9_-]{0,63}$')
+
+
+def _install_active_skill(*, home: Path) -> str | None:
+    """Install the build-staged single skill without changing raw-mode behavior."""
+    if not ACTIVE_SKILL_DIR.exists():
+        return None
+
+    if not ACTIVE_SKILL_METADATA_PATH.is_file() or not ACTIVE_SKILL_PACKAGE_DIR.is_dir():
+        msg = 'Malformed active-skill staging directory in worker image'
+        raise RuntimeError(msg)
+
+    try:
+        metadata = json.loads(ACTIVE_SKILL_METADATA_PATH.read_text(encoding='utf-8'))
+    except (OSError, json.JSONDecodeError) as err:
+        msg = 'Unable to read active-skill metadata in worker image'
+        raise RuntimeError(msg) from err
+
+    name = metadata.get('name') if isinstance(metadata, dict) else None
+    if not isinstance(name, str) or not SKILL_NAME_RE.fullmatch(name):
+        msg = 'Malformed active-skill metadata: missing name'
+        raise RuntimeError(msg)
+
+    revision = metadata.get('repository_revision') if isinstance(metadata, dict) else None
+    if revision is not None and not isinstance(revision, str):
+        msg = 'Malformed active-skill metadata: invalid repository_revision'
+        raise RuntimeError(msg)
+
+    skill_files = list(ACTIVE_SKILL_PACKAGE_DIR.rglob('SKILL.md'))
+    if skill_files != [ACTIVE_SKILL_PACKAGE_DIR / 'SKILL.md']:
+        msg = 'Malformed active-skill package: expected exactly one root SKILL.md'
+        raise RuntimeError(msg)
+
+    target = home / '.codex' / 'skills' / name
+    if target.exists():
+        shutil.rmtree(target)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(ACTIVE_SKILL_PACKAGE_DIR, target, symlinks=False)
+    revision_suffix = f' @ {revision}' if revision else ''
+    logger.info(f'Active benchmark skill: {name}{revision_suffix}')
+    return name
 
 
 def _write_codex_proxy_config(*, home: Path) -> None:
@@ -185,6 +230,9 @@ def _run_codex_detect(*, openai_token: str, key_mode: str) -> Path:
     model = _resolve_codex_model(model_key=MODEL_KEY, model_map=model_map)
     env['CODEX_MODEL'] = model
     env['EVM_BENCH_DETECT_MD'] = str(DETECT_MD_PATH)
+    active_skill_name = _install_active_skill(home=AGENT_DIR)
+    if active_skill_name:
+        env['EVM_BENCH_ACTIVE_SKILL_NAME'] = active_skill_name
 
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
     proc = subprocess.run(  # noqa: S603
