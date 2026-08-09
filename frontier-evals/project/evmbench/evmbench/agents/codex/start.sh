@@ -7,6 +7,21 @@ set -x
     test -n "$OPENAI_API_KEY" && echo "OPENAI_API_KEY is set" || { echo "Missing OPENAI_API_KEY"; exit 1; }
 } 2>&1 | tee $LOGS_DIR/debug.log
 
+# Keep Codex on its Responses wire API while routing provider traffic through
+# the local EVMBench Responses-to-Chat adapter.
+if [[ -n "${OAI_PROXY_BASE_URL:-}" && "${OAI_PROXY_BASE_URL}" != \$\{\{* ]]; then
+    mkdir -p "$AGENT_DIR/.codex"
+    cat > "$AGENT_DIR/.codex/config.toml" <<EOF
+model_provider = "proxy"
+
+[model_providers.proxy]
+name = "proxy"
+base_url = "${OAI_PROXY_BASE_URL%/}/v1"
+wire_api = "responses"
+env_key = "OPENAI_API_KEY"
+EOF
+fi
+
 # Agent command
 set +x
 {

@@ -200,6 +200,7 @@ class K8sBackend(BackendABC):
             'RESULTSVC_JOB_TOKEN': options.result_token,
             'JOB_ID': options.job_id,
             'AGENT_ID': options.model,
+            'EVM_BENCH_CODEX_REASONING_EFFORT': settings.INSTANCER_CODEX_REASONING_EFFORT,
         }
         if settings.INSTANCER_OAI_PROXY_BASE_URL:
             env['OAI_PROXY_BASE_URL'] = settings.INSTANCER_OAI_PROXY_BASE_URL

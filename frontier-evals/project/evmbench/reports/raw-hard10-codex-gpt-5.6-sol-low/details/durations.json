@@ -1,0 +1,62 @@
+{
+  "benchmark_started_at": "2026-08-07T23:33:35Z",
+  "canonical_group_completed_at": "2026-08-08T00:07:34Z",
+  "benchmark_completed_at_after_retry": "2026-08-08T00:15:01Z",
+  "benchmark_wall_clock_seconds": 2486.0,
+  "definitions": {
+    "agent_runtime_seconds": "Canonical metadata.json runtime.",
+    "end_to_end_duration_seconds_approx": "Audit metadata start to run.log final-write time, including grading; filesystem timestamp resolution/flush makes this approximate."
+  },
+  "per_audit": [
+    {
+      "audit_id": "2024-01-renft",
+      "agent_runtime_seconds": 360.0185923576355,
+      "end_to_end_duration_seconds_approx": 377.277
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "agent_runtime_seconds": 360.01716899871826,
+      "end_to_end_duration_seconds_approx": 370.579
+    },
+    {
+      "audit_id": "2024-05-arbitrum-foundation",
+      "agent_runtime_seconds": 420.0242018699646,
+      "end_to_end_duration_seconds_approx": 427.968
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "agent_runtime_seconds": 240.01064610481262,
+      "end_to_end_duration_seconds_approx": 248.57
+    },
+    {
+      "audit_id": "2024-06-size",
+      "agent_runtime_seconds": 780.0643157958984,
+      "end_to_end_duration_seconds_approx": 788.405
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "agent_runtime_seconds": 300.04572010040283,
+      "end_to_end_duration_seconds_approx": 307.89
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "agent_runtime_seconds": 240.01396822929382,
+      "end_to_end_duration_seconds_approx": 249.132
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "agent_runtime_seconds": 300.0151653289795,
+      "end_to_end_duration_seconds_approx": 308.274
+    },
+    {
+      "audit_id": "2024-08-wildcat",
+      "agent_runtime_seconds": 180.01631689071655,
+      "end_to_end_duration_seconds_approx": 186.678
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "agent_runtime_seconds": 360.0212240219116,
+      "end_to_end_duration_seconds_approx": 369.412
+    }
+  ]
+}

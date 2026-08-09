@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import AliasChoices, Field, PostgresDsn, Secret, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -82,6 +84,10 @@ class Settings(BaseSettings):
     INSTANCER_OAI_PROXY_BASE_URL: str | None = Field(
         default=None,
         validation_alias=AliasChoices('INSTANCER_OAI_PROXY_BASE_URL', 'OAI_PROXY_BASE_URL'),
+    )
+    INSTANCER_CODEX_REASONING_EFFORT: Literal['minimal', 'low', 'medium', 'high', 'xhigh'] = Field(
+        default='low',
+        validation_alias=AliasChoices('INSTANCER_CODEX_REASONING_EFFORT', 'EVM_BENCH_CODEX_REASONING_EFFORT'),
     )
 
     @field_validator('INSTANCER_OAI_PROXY_BASE_URL', mode='before')

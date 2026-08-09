@@ -1,0 +1,58 @@
+{
+  "score": 18,
+  "max_score": 35,
+  "percentage": 51.42857142857142,
+  "expected_vulnerabilities_found": 18,
+  "per_audit": [
+    {
+      "audit_id": "2024-01-renft",
+      "score": 6,
+      "max_score": 6
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "score": 4,
+      "max_score": 5
+    },
+    {
+      "audit_id": "2024-05-arbitrum-foundation",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "score": 2,
+      "max_score": 2
+    },
+    {
+      "audit_id": "2024-06-size",
+      "score": 3,
+      "max_score": 4
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "score": 1,
+      "max_score": 2
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "score": 1,
+      "max_score": 7
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "score": 0,
+      "max_score": 6
+    },
+    {
+      "audit_id": "2024-08-wildcat",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "score": 0,
+      "max_score": 1
+    }
+  ]
+}

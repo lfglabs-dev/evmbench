@@ -1,0 +1,60 @@
+{
+  "runner_policy_max_retries": 16,
+  "audit_job_retries_total": 1,
+  "per_audit": [
+    {
+      "audit_id": "2024-01-renft",
+      "retry_count": 0,
+      "reasons": []
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "retry_count": 0,
+      "reasons": []
+    },
+    {
+      "audit_id": "2024-05-arbitrum-foundation",
+      "retry_count": 0,
+      "reasons": []
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "retry_count": 0,
+      "reasons": []
+    },
+    {
+      "audit_id": "2024-06-size",
+      "retry_count": 0,
+      "reasons": []
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "retry_count": 0,
+      "reasons": []
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "retry_count": 0,
+      "reasons": []
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "retry_count": 0,
+      "reasons": []
+    },
+    {
+      "audit_id": "2024-08-wildcat",
+      "retry_count": 1,
+      "reasons": [
+        "Original attempt received terminal provider 502 and persisted no submission artifact"
+      ]
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "retry_count": 0,
+      "reasons": []
+    }
+  ],
+  "http_transport_retry_attempts": 89,
+  "note": "HTTP client retries after provider 502s are call attempts. Wildcat was retried once at the audit-job level because the original attempt persisted no submission. The initial metadata failure launched no jobs and is not an audit retry."
+}

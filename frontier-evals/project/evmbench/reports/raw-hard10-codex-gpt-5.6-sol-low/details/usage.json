@@ -1,0 +1,155 @@
+{
+  "scope": "Codex audit-agent turns only; judge-model usage was not emitted by the harness/provider access logs.",
+  "completeness": "partial",
+  "attempts_with_usage": 8,
+  "attempts_without_usage": 3,
+  "total_agent_attempts": 11,
+  "missing_reason": "Phi and Blackhole produced valid submissions before a terminal provider 502; original Wildcat received the same error before persisting a submission and was retried once. Codex emitted turn.failed without cumulative usage for those three attempts. Missing fields remain unavailable.",
+  "known_lower_bound_totals": {
+    "input_tokens": 9027103,
+    "cached_input_tokens": 8236032,
+    "uncached_input_tokens": 791071,
+    "output_tokens_including_reasoning": 62091,
+    "total_tokens": 9089194,
+    "reasoning_tokens": null,
+    "cache_write_tokens": null
+  },
+  "exact_full_run_totals_available": false,
+  "api_call_count": {
+    "total_http_attempts": 360,
+    "by_endpoint_and_status": {
+      "/v1/responses": {
+        "200": 236,
+        "502": 89
+      },
+      "/v1/chat/completions": {
+        "200": 35
+      }
+    },
+    "note": "Includes transport retry attempts; successful calls and failed attempts are separated by status."
+  },
+  "per_audit": [
+    {
+      "audit_id": "2024-01-renft",
+      "usage": {
+        "input_tokens": 920745,
+        "cached_input_tokens": 770560,
+        "uncached_input_tokens": 150185,
+        "output_tokens_including_reasoning": 10269,
+        "reasoning_tokens": null,
+        "total_tokens": 931014,
+        "cache_write_tokens": null,
+        "source": "Codex turn.completed"
+      },
+      "completeness": "reported_by_codex"
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "usage": {
+        "input_tokens": 915164,
+        "cached_input_tokens": 823296,
+        "uncached_input_tokens": 91868,
+        "output_tokens_including_reasoning": 9996,
+        "reasoning_tokens": null,
+        "total_tokens": 925160,
+        "cache_write_tokens": null,
+        "source": "Codex turn.completed"
+      },
+      "completeness": "reported_by_codex"
+    },
+    {
+      "audit_id": "2024-05-arbitrum-foundation",
+      "usage": {
+        "input_tokens": 1342029,
+        "cached_input_tokens": 1248768,
+        "uncached_input_tokens": 93261,
+        "output_tokens_including_reasoning": 8947,
+        "reasoning_tokens": null,
+        "total_tokens": 1350976,
+        "cache_write_tokens": null,
+        "source": "Codex turn.completed"
+      },
+      "completeness": "reported_by_codex"
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "usage": {
+        "input_tokens": 538743,
+        "cached_input_tokens": 487424,
+        "uncached_input_tokens": 51319,
+        "output_tokens_including_reasoning": 4926,
+        "reasoning_tokens": null,
+        "total_tokens": 543669,
+        "cache_write_tokens": null,
+        "source": "Codex turn.completed"
+      },
+      "completeness": "reported_by_codex"
+    },
+    {
+      "audit_id": "2024-06-size",
+      "usage": {
+        "input_tokens": 3008645,
+        "cached_input_tokens": 2875904,
+        "uncached_input_tokens": 132741,
+        "output_tokens_including_reasoning": 12133,
+        "reasoning_tokens": null,
+        "total_tokens": 3020778,
+        "cache_write_tokens": null,
+        "source": "Codex turn.completed"
+      },
+      "completeness": "reported_by_codex"
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "usage": {
+        "input_tokens": 849340,
+        "cached_input_tokens": 762880,
+        "uncached_input_tokens": 86460,
+        "output_tokens_including_reasoning": 5396,
+        "reasoning_tokens": null,
+        "total_tokens": 854736,
+        "cache_write_tokens": null,
+        "source": "Codex turn.completed"
+      },
+      "completeness": "reported_by_codex"
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "usage": {
+        "input_tokens": 677962,
+        "cached_input_tokens": 580096,
+        "uncached_input_tokens": 97866,
+        "output_tokens_including_reasoning": 6483,
+        "reasoning_tokens": null,
+        "total_tokens": 684445,
+        "cache_write_tokens": null,
+        "source": "Codex turn.completed"
+      },
+      "completeness": "reported_by_codex"
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "usage": null,
+      "completeness": "unavailable_due_terminal_transport_error"
+    },
+    {
+      "audit_id": "2024-08-wildcat",
+      "usage": {
+        "input_tokens": 774475,
+        "cached_input_tokens": 687104,
+        "uncached_input_tokens": 87371,
+        "output_tokens_including_reasoning": 3941,
+        "reasoning_tokens": null,
+        "total_tokens": 778416,
+        "cache_write_tokens": null,
+        "source": "Codex turn.completed"
+      },
+      "completeness": "reported_by_codex"
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "usage": null,
+      "completeness": "unavailable_due_terminal_transport_error"
+    }
+  ]
+}

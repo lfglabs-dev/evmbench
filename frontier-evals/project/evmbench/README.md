@@ -126,6 +126,31 @@ To add a new agent, see `evmbench/agents` (each agent has a `config.yaml` + a `s
 
 By default, outputs go under `project/evmbench/runs/`. Each invocation creates a run-group directory containing `group.log`, and per-audit run log files.
 
+#### Create a clean results report
+
+Use the report command to turn graded run groups into a self-contained folder under [`reports/`](reports/):
+
+```bash
+uv run python scripts/report_results.py \
+    runs/<run-group> \
+    --name my-benchmark \
+    --title "My benchmark"
+```
+
+The generated `reports/my-benchmark/` folder contains a readable `README.md`, a machine-readable `report.json`, and per-audit and per-vulnerability CSV files. Raw transcripts and credentials are not copied.
+
+Pass multiple run-group paths in chronological order when a failed audit was retried separately. The latest graded attempt for each audit is selected, while attempt and retry counts include every supplied group:
+
+```bash
+uv run python scripts/report_results.py \
+    runs/<original-run-group> \
+    runs/<retry-run-group> \
+    --name my-benchmark \
+    --force
+```
+
+The command refuses to overwrite an existing report unless `--force` is supplied. Missing token fields are shown as unavailable rather than zero. See [`reports/README.md`](reports/README.md) for the report layout.
+
 ## Running At Scale
 
 The default runner is local, but you can run `evmbench` on your own infrastructure at scale as long as you provide a backend that supports a small "computer API" (run commands in containers, upload/download files, optional sidecar support for exploit mode).

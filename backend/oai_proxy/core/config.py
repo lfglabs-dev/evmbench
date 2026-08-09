@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import Secret
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -18,6 +20,9 @@ class Settings(BaseSettings):
     # Static OpenAI key - when set, requests with "Bearer STATIC" use this key
     # The real key never leaves this service
     OAI_PROXY_STATIC_KEY: Secret[str] | None = None
+    OAI_PROXY_UPSTREAM_BASE_URL: str = 'https://api.openai.com/v1'
+    # Adapt Codex's Responses requests for providers that expose Chat Completions only.
+    OAI_PROXY_RESPONSES_MODE: Literal['passthrough', 'chat_completions'] = 'passthrough'
 
 
 settings = Settings()  # type: ignore[missing-argument]

@@ -1,0 +1,101 @@
+{
+  "all_jobs_scored": true,
+  "all_artifacts_valid": true,
+  "harness_rollout_failures": 0,
+  "jobs": [
+    {
+      "audit_id": "2024-01-renft",
+      "run_id": "2024-01-renft_95e8a174-dba2-4f46-bc8e-d5b883514f6a",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.completed",
+      "transport_error": null
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "run_id": "2024-03-taiko_c47557bf-c6e5-4dfd-a3c7-e3aeed7aba17",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.completed",
+      "transport_error": null
+    },
+    {
+      "audit_id": "2024-05-arbitrum-foundation",
+      "run_id": "2024-05-arbitrum-foundation_b1fa698e-e768-4f59-b340-2c7fb44386ec",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.completed",
+      "transport_error": null
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "run_id": "2024-05-olas_3eb53080-dfdd-4821-8998-2efafc1a6a98",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.completed",
+      "transport_error": null
+    },
+    {
+      "audit_id": "2024-06-size",
+      "run_id": "2024-06-size_3f4f3c65-38d5-4f4d-87de-69122389497d",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.completed",
+      "transport_error": null
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "run_id": "2024-07-basin_fd0f5ec7-c9ef-4fa9-a077-5ca3a742c48a",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.completed",
+      "transport_error": null
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "run_id": "2024-07-benddao_c93bf399-db6f-421f-9372-1ce4d6de3fb9",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.completed",
+      "transport_error": null
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "run_id": "2024-08-phi_78a013dc-046b-4a8a-a3f1-93c4c1a5e43f",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.failed",
+      "transport_error": {
+        "type": "agent_transport_error",
+        "message_sanitized": "unexpected status 502 Bad Gateway",
+        "url": "http://host.docker.internal:8084/v1/responses",
+        "provider_trace_id": "a27a3e3a9c8062e8-LIS",
+        "credential_data_removed": true,
+        "audit_id": "2024-08-phi"
+      }
+    },
+    {
+      "audit_id": "2024-08-wildcat",
+      "run_id": "2024-08-wildcat_04e25795-ab14-41cd-8adb-49debb4c3a24",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.completed",
+      "transport_error": null
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "run_id": "2025-05-blackhole_58dac520-4709-464e-b784-56856596c0f7",
+      "scored": true,
+      "artifact_validation": "passed",
+      "agent_terminal_event": "turn.failed",
+      "transport_error": {
+        "type": "agent_transport_error",
+        "message_sanitized": "unexpected status 502 Bad Gateway",
+        "url": "http://host.docker.internal:8084/v1/responses",
+        "provider_trace_id": "a27a46988f0e0da4-LIS",
+        "credential_data_removed": true,
+        "audit_id": "2025-05-blackhole"
+      }
+    }
+  ]
+}

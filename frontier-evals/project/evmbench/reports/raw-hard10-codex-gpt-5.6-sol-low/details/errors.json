@@ -1,0 +1,57 @@
+{
+  "benchmark_process_exit_status": 0,
+  "harness_rollout_failures": 0,
+  "audit_transport_errors": [
+    {
+      "type": "agent_transport_error",
+      "message_sanitized": "unexpected status 502 Bad Gateway",
+      "url": "http://host.docker.internal:8084/v1/responses",
+      "provider_trace_id": "a27a3e3a9c8062e8-LIS",
+      "credential_data_removed": true,
+      "audit_id": "2024-08-phi"
+    },
+    {
+      "type": "agent_transport_error",
+      "message_sanitized": "unexpected status 502 Bad Gateway",
+      "url": "http://host.docker.internal:8084/v1/responses",
+      "provider_trace_id": "a27a46988f0e0da4-LIS",
+      "credential_data_removed": true,
+      "audit_id": "2025-05-blackhole"
+    },
+    {
+      "type": "agent_transport_error",
+      "message_sanitized": "unexpected status 502 Bad Gateway",
+      "url": "http://host.docker.internal:8084/v1/responses",
+      "provider_trace_id": "a27a3e1bea9411e6-LIS",
+      "credential_data_removed": true,
+      "audit_id": "2024-08-wildcat",
+      "attempt": 0,
+      "artifact_outcome": "submission/audit.md missing; retried once"
+    }
+  ],
+  "transport_error_effect": "Phi and Blackhole had non-empty submissions and were scored. Original Wildcat had no submission, was scored 0, and was retried once; its retry produced a valid report and independently scored 0/1.",
+  "setup_and_prelaunch_errors": [
+    {
+      "phase": "initial benchmark launch",
+      "type": "model_metadata_error",
+      "error_sanitized": "Unknown model gpt-5.6-sol in static context-window mapping.",
+      "impact": "Attempt exited before any audit job started.",
+      "resolution": "Added the provider model's 400000-token context-window mapping and relaunched once.",
+      "log": "logs/benchmark-attempt1-model-metadata-failure.log"
+    },
+    {
+      "phase": "image build",
+      "type": "docker_storage_exhaustion",
+      "error_sanitized": "Docker build storage exhausted (ENOSPC).",
+      "impact": "Image builds paused before benchmark launch.",
+      "resolution": "Pruned disposable build cache only, then completed canonical image builds."
+    },
+    {
+      "phase": "blackhole image build",
+      "type": "upstream_compile_mismatch",
+      "error_sanitized": "Declared benchmark commit has an Algebra dependency interface mismatch (two versus three return values).",
+      "impact": "Hardhat compile is non-zero at the declared source commit.",
+      "resolution": "Preserved benchmark sources and allowed the image build's compile warm-up to continue; audit execution and scoring completed."
+    }
+  ]
+}
