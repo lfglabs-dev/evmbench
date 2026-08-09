@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import re
 import shlex
 import time
 from collections.abc import AsyncGenerator
@@ -46,6 +47,33 @@ from evmbench.nano.runtime import EVMRuntimeConfig
 
 logger = structlog.stdlib.get_logger(component=__name__)
 
+_SKILL_NAME_RE = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
+
+
+def _validate_active_skill(path_value: str) -> tuple[Path, str]:
+    """Return a safe, single-skill package selected for an evaluation run."""
+    source_input = Path(path_value).expanduser()
+    if not source_input.is_dir() or source_input.is_symlink():
+        raise ValueError(f"active_skill_path must be a non-symlink directory: {path_value}")
+    source = source_input.resolve()
+
+    skill_md = source / "SKILL.md"
+    skill_files = [candidate for candidate in source.rglob("SKILL.md") if candidate.is_file()]
+    if skill_files != [skill_md]:
+        raise ValueError(
+            "active_skill_path must contain exactly one SKILL.md at its root"
+        )
+    for candidate in source.rglob("*"):
+        if candidate.is_symlink():
+            raise ValueError(f"active_skill_path must not contain symlinks: {candidate}")
+
+    content = skill_md.read_text(encoding="utf-8")
+    name_match = re.search(r"^name:\s*['\"]?([^'\"\n]+?)['\"]?\s*$", content, re.MULTILINE)
+    skill_name = name_match.group(1).strip() if name_match else source.name
+    if not _SKILL_NAME_RE.fullmatch(skill_name):
+        raise ValueError(f"invalid active skill name: {skill_name!r}")
+    return source, skill_name
+
 
 @chz.chz
 class EVMbenchSolver(PythonCodingSolver):
@@ -70,6 +98,10 @@ class EVMbenchSolver(PythonCodingSolver):
     detect_iterations: int = chz.field(default=1)
     disable_internet: bool = chz.field(default=True)
     debug_local: bool = chz.field(default=False)
+    active_skill_path: str | None = chz.field(
+        default=None,
+        doc="Optional local package with one root SKILL.md to install in each agent worker.",
+    )
 
     @chz.init_property
     def runtime_config(self) -> EVMRuntimeConfig:
@@ -153,6 +185,17 @@ class EVMbenchSolver(PythonCodingSolver):
                 # 1. Run the task setup
                 await task.setup(computer, self.runtime_config)
 
+                active_skill_name: str | None = None
+                if self.active_skill_path:
+                    active_skill_source, active_skill_name = _validate_active_skill(
+                        self.active_skill_path
+                    )
+                    await put_dir_in_computer(
+                        computer,
+                        str(active_skill_source),
+                        f"{AGENT_DIR}/.codex/skills/{active_skill_name}",
+                    )
+
                 agent = agent_registry.get_agent(self.runtime_config.agent_id)
                 agent_rpc_override = None
                 if isinstance(task, EVMTask):
@@ -167,6 +210,16 @@ class EVMbenchSolver(PythonCodingSolver):
                     agent_rpc_host=agent_rpc_override[0] if agent_rpc_override else None,
                     agent_rpc_port=agent_rpc_override[1] if agent_rpc_override else None,
                 )
+                if active_skill_name:
+                    active_skill_md = f"{AGENT_DIR}/.codex/skills/{active_skill_name}/SKILL.md"
+                    instructions += (
+                        "\n\n## Active benchmark skill\n\n"
+                        f"A benchmark skill named `{active_skill_name}` is installed at "
+                        f"`{active_skill_md}`. You MUST read the complete `SKILL.md` "
+                        "before auditing and use its methodology throughout the audit. "
+                        "These EVMbench instructions, scope rules, and submission requirements "
+                        "remain authoritative if they conflict with the skill.\n"
+                    )
                 if task.mode == "detect" and self.detect_iterations > 1:
                     postscript = (
                         "If submission/audit.md already exists, still conduct a thorough audit and extend the report. " \
