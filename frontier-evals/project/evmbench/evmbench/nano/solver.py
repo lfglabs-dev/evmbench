@@ -7,6 +7,7 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from dataclasses import asdict
 from pathlib import Path
+from typing import Literal
 
 import blobfile as bf
 import structlog.stdlib
@@ -54,6 +55,14 @@ class EVMbenchSolver(PythonCodingSolver):
         default=None,
         doc="Optional REASONING_EFFORT override for agent containers.",
     )
+    judge_model: str = chz.field(
+        default="gpt-5",
+        doc="Model used by the canonical detect grader.",
+    )
+    judge_reasoning_effort: Literal["low", "medium", "high"] = chz.field(
+        default="high",
+        doc="Reasoning effort used by the canonical detect grader.",
+    )
     timeout: int = chz.field(
         default=10 * 3600,
         doc="Upper limit on agent runtime.",
@@ -64,7 +73,11 @@ class EVMbenchSolver(PythonCodingSolver):
 
     @chz.init_property
     def runtime_config(self) -> EVMRuntimeConfig:
-        return EVMRuntimeConfig(agent_id=self.agent_id)
+        return EVMRuntimeConfig(
+            agent_id=self.agent_id,
+            judge_model=self.judge_model,
+            reasoning_effort=self.judge_reasoning_effort,
+        )
 
     def shortname(self) -> str:
         if self.agent_reasoning_effort:

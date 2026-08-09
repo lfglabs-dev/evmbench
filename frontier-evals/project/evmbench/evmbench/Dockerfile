@@ -43,10 +43,15 @@ RUN python3 -m pip install --no-cache-dir jupyter ipykernel && \
 # Create directory skeleton
 RUN mkdir -p "$AUDIT_DIR" "$SUBMISSION_DIR" "$LOGS_DIR"
 
+ARG TARGETARCH
 ENV CODEX_VERSION=rust-v0.98.0
-ENV ARCH=x86_64
-ENV CODEX_URL=https://github.com/openai/codex/releases/download/${CODEX_VERSION}/codex-${ARCH}-unknown-linux-gnu.tar.gz
 RUN set -eux; \
+    case "$TARGETARCH" in \
+        amd64) CODEX_ARCH=x86_64 ;; \
+        arm64) CODEX_ARCH=aarch64 ;; \
+        *) echo "unsupported architecture: $TARGETARCH" >&2; exit 1 ;; \
+    esac; \
+    CODEX_URL="https://github.com/openai/codex/releases/download/${CODEX_VERSION}/codex-${CODEX_ARCH}-unknown-linux-gnu.tar.gz"; \
     mkdir -p /usr/local/src/codex; cd /usr/local/src/codex; \
     curl -L -o codex.tgz "$CODEX_URL"; \
     ENTRY="$(tar -tzf codex.tgz | grep -v '/$' | head -n1)"; \
@@ -65,7 +70,18 @@ RUN npm install -g @google/gemini-cli@${GEMINI_VERSION}
 ENV OPENCODE_VERSION=1.1.26
 RUN npm install -g opencode-ai@${OPENCODE_VERSION}
 
-RUN curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep_14.1.1-1_amd64.deb && dpkg -i ripgrep_14.1.1-1_amd64.deb
+RUN set -eux; \
+    if [ "$TARGETARCH" = amd64 ]; then \
+        curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep_14.1.1-1_amd64.deb; \
+        dpkg -i ripgrep_14.1.1-1_amd64.deb; \
+    elif [ "$TARGETARCH" = arm64 ]; then \
+        curl -L -o ripgrep.tgz https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep-14.1.1-aarch64-unknown-linux-gnu.tar.gz; \
+        tar -xzf ripgrep.tgz --strip-components=1 -C /usr/local/bin ripgrep-14.1.1-aarch64-unknown-linux-gnu/rg; \
+        chmod 0755 /usr/local/bin/rg; \
+    else \
+        echo "unsupported architecture: $TARGETARCH" >&2; exit 1; \
+    fi; \
+    rg --version
 
 WORKDIR "$AGENT_DIR"
 

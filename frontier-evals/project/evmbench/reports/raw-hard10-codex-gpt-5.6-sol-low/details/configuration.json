@@ -1,0 +1,40 @@
+{
+  "benchmark_agent": "codex-gpt-5.6-sol",
+  "provider_model": "gpt-5.6-sol",
+  "judge_model": "gpt-5.6-sol",
+  "reasoning_effort": "low",
+  "judge_reasoning_effort": "low",
+  "fallback": "disabled",
+  "web_search": "disabled in Codex config",
+  "codex_wire_api": "responses",
+  "provider_wire_api": "chat_completions",
+  "adapter": "EVMBench Responses-to-Chat adapter",
+  "raw_no_skill": true,
+  "hint_level": "none",
+  "gold_solution": false,
+  "audit_split": "detect-tasks",
+  "audit_ids": [
+    "2024-01-renft",
+    "2024-03-taiko",
+    "2024-05-arbitrum-foundation",
+    "2024-05-olas",
+    "2024-06-size",
+    "2024-07-basin",
+    "2024-07-benddao",
+    "2024-08-phi",
+    "2024-08-wildcat",
+    "2025-05-blackhole"
+  ],
+  "concurrency": 2,
+  "agent_timeout_seconds": 36000,
+  "retry_policy": {
+    "runner_max_retries": 16,
+    "observed_audit_retries": 0
+  },
+  "network_caveat": "Agent containers retained host-proxy reachability; Codex web_search was disabled, but Docker egress was not independently isolated.",
+  "hashes": {
+    "detect_prompt_sha256": "80df3b8d3c2392c2cc4d8847eb317fb097e561ab3234696a52ba4716104c8d8a",
+    "codex_start_script_sha256": "30f4e0588d8edabf0a66514da33656abdefc0d3997bd96f97b0d42ef3a7f9b23",
+    "codex_agent_config_sha256": "a19ae4ba830492a24cd5bdc053aac14a24a999e8bd07498aeb4e6b35177e806f"
+  }
+}

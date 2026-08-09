@@ -1,0 +1,61 @@
+{
+  "type": "estimate",
+  "provider_billing_configuration_independently_confirmed": false,
+  "formula": "uncached_input*5/1e6 + cached_input*0.5/1e6 + cache_write*6.25/1e6 + output_including_reasoning*30/1e6",
+  "prices_usd_per_million": {
+    "uncached_input": 5.0,
+    "cached_input": 0.5,
+    "cache_write": 6.25,
+    "output_including_reasoning": 30.0
+  },
+  "known_lower_bound_estimated_cost_usd": 9.936101,
+  "exact_total_cost_available": false,
+  "limitations": [
+    "Usage unavailable for three agent attempts",
+    "Judge usage unavailable",
+    "Cache-write tokens unavailable",
+    "Provider billing configuration not independently confirmed"
+  ],
+  "per_audit": [
+    {
+      "audit_id": "2024-01-renft",
+      "estimated_cost_usd": 1.444275
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "estimated_cost_usd": 1.170868
+    },
+    {
+      "audit_id": "2024-05-arbitrum-foundation",
+      "estimated_cost_usd": 1.359099
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "estimated_cost_usd": 0.648087
+    },
+    {
+      "audit_id": "2024-06-size",
+      "estimated_cost_usd": 2.465647
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "estimated_cost_usd": 0.97562
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "estimated_cost_usd": 0.973868
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "estimated_cost_usd": null
+    },
+    {
+      "audit_id": "2024-08-wildcat",
+      "estimated_cost_usd": 0.898637
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "estimated_cost_usd": null
+    }
+  ]
+}

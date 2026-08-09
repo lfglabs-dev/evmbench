@@ -6,6 +6,7 @@ from pathlib import Path
 
 from evmbench.utils import get_splits_dir
 
+
 def run_command(cmd, tag, cwd=None):
     """Run a shell command and return the result."""
     try:
@@ -98,11 +99,14 @@ def main():
     parser.add_argument("--audit", default=None, help="Audit to build")
     parser.add_argument("--no-build-base", action="store_true", help="Skip building the base image")
     parser.add_argument("--use-cache", action="store_true", help="Use cache when building the image")
+    parser.add_argument(
+        "--platform", default="linux/amd64", help="Docker build target platform"
+    )
     args = parser.parse_args()
 
     # Build base image first
     if not args.no_build_base:
-        base_tag = build_base_image(args.base_dir, use_cache=args.use_cache)
+        build_base_image(args.base_dir, use_cache=args.use_cache, platform=args.platform)
 
     # Find all audit directories with Dockerfiles
     audit_dirs = find_audit_dirs()
@@ -125,7 +129,13 @@ def main():
     # Build audit images in parallel
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallel) as executor:
         future_to_audit = {
-            executor.submit(build_audit_image, audit_dir, args.tag_prefix, use_cache=args.use_cache): audit_dir
+            executor.submit(
+                build_audit_image,
+                audit_dir,
+                args.tag_prefix,
+                use_cache=args.use_cache,
+                platform=args.platform,
+            ): audit_dir
             for audit_dir in audit_dirs
         }
 

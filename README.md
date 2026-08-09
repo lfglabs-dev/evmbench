@@ -6,7 +6,7 @@
 
 **evmbench is a benchmark and agent harness for finding and exploiting smart contract bugs.**
 
-<a href="#how-it-works"><b><u>How it works</u></b></a> | <a href="#single-skill-benchmarks"><b><u>Single-skill benchmarks</u></b></a> | <a href="#security"><b><u>Security</u></b></a> | <a href="#key-services"><b><u>Key services</u></b></a> | <a href="#repo-layout"><b><u>Repo layout</u></b></a> | <a href="#quickstart-local-dev"><b><u>Quickstart (local dev)</u></b></a>
+<a href="#how-it-works"><b><u>How it works</u></b></a> | <a href="#single-skill-benchmarks"><b><u>Single-skill benchmarks</u></b></a> | <a href="#benchmark-result-reports"><b><u>Result reports</u></b></a> | <a href="#security"><b><u>Security</u></b></a> | <a href="#key-services"><b><u>Key services</u></b></a> | <a href="#repo-layout"><b><u>Repo layout</u></b></a> | <a href="#quickstart-local-dev"><b><u>Quickstart (local dev)</u></b></a>
 
 This repository contains a companion interface to the `evmbench` detect evaluation. The evaluation code is included directly under `frontier-evals/` so the application and benchmark data can be cloned and maintained together.
 
@@ -85,6 +85,20 @@ The preparation command fails before image construction for missing, malformed, 
 
 Reset to `raw` before rebuilding the baseline image. The full worker-runner details are in [`backend/worker_runner/README.md`](backend/worker_runner/README.md).
 
+## Benchmark result reports
+
+Canonical evaluation runs can be converted into clean Markdown, JSON, and CSV bundles under [`frontier-evals/project/evmbench/reports/`](frontier-evals/project/evmbench/reports/):
+
+```bash
+cd frontier-evals/project/evmbench
+uv run python scripts/report_results.py \
+    runs/<run-group> \
+    --name my-benchmark \
+    --title "My benchmark"
+```
+
+Multiple run groups can be supplied when a failed audit was retried separately. The latest graded attempt for each audit is reported, and earlier attempts remain included in retry and usage accounting. See the [evaluation README](frontier-evals/project/evmbench/README.md#create-a-clean-results-report) for options and output details.
+
 ## Security
 
 `evmbench` runs an LLM-driven agent against uploaded, untrusted code. Treat the worker runtime (filesystem, logs, outputs) as an untrusted environment.
@@ -129,6 +143,7 @@ Operational note: worker runtime is bounded by default; override the max audit r
 ├── LICENSE
 ├── frontend/                 Next.js UI (upload zip, select model, view results)
 ├── frontier-evals/           Evaluation framework and benchmark data
+│   └── project/evmbench/reports/  Generated Markdown, JSON, and CSV result bundles
 ├── backend/
 │   ├── api/                  Main FastAPI API (jobs, auth, integration)
 │   ├── instancer/            RabbitMQ consumer; starts workers (Docker/K8s)

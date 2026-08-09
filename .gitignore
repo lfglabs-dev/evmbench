@@ -171,3 +171,7 @@ cython_debug/
 .vscode/
 
 records/
+
+# Local benchmark transcripts and execution artifacts. Publish sanitized summaries
+# through frontier-evals/project/evmbench/reports/ instead.
+/artifacts/

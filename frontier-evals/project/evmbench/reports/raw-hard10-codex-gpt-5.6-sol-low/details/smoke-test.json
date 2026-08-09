@@ -1,0 +1,31 @@
+{
+  "status": "succeeded",
+  "job_id": "0bf989b7-5825-47cd-9c9f-ad2914162b3a",
+  "model": "codex-gpt-5.6-sol",
+  "started_at": "2026-08-07T19:21:30.911728Z",
+  "finished_at": "2026-08-07T19:22:18.716534Z",
+  "path": [
+    "Codex worker",
+    "Responses request",
+    "EVMBench proxy",
+    "Responses-to-Chat adapter",
+    "Sandboxed /v1/chat/completions"
+  ],
+  "evidence": {
+    "provider_model": "gpt-5.6-sol",
+    "reasoning_effort": "low",
+    "fallback": false,
+    "real_tool_round_trip": true,
+    "responses_sse_completed": true,
+    "usage_preserved": {
+      "input_tokens": 64400,
+      "cached_input_tokens": 36352,
+      "output_tokens": 1049
+    },
+    "web_search_enabled": false
+  },
+  "logs": [
+    "smoke-agent.log",
+    "logs/smoke-agent.log"
+  ]
+}

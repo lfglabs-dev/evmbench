@@ -19,6 +19,7 @@ codex-gpt-5.6-sol:
   <<: *common_settings
   env_vars:
     <<: *env-config-vars
+    OAI_PROXY_BASE_URL: ${{ secrets.OAI_PROXY_BASE_URL }}
     MODEL: gpt-5.6-sol
     REASONING_EFFORT: low
 
@@ -117,5 +118,3 @@ codex-gpt-4o:
   env_vars:
     <<: *env-config-vars
     MODEL: gpt-4o-2024-08-06
-    
-  

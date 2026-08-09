@@ -1,0 +1,94 @@
+{
+  "git_commit": "0a3d3b0e564df6a544b69e9bcb04bfee36602927",
+  "required_git_commit": "0a3d3b0e564df6a544b69e9bcb04bfee36602927",
+  "detached_head": true,
+  "dirty_tree": true,
+  "dirty_tree_entries": [
+    "M frontier-evals/project/common/preparedness_turn_completer/preparedness_turn_completer/utils.py",
+    " M frontier-evals/project/evmbench/audits/2025-05-blackhole/Dockerfile",
+    " M frontier-evals/project/evmbench/docker_build.py",
+    " M frontier-evals/project/evmbench/evmbench/Dockerfile",
+    " M frontier-evals/project/evmbench/evmbench/agents/codex/config.yaml",
+    " M frontier-evals/project/evmbench/evmbench/agents/codex/start.sh",
+    " M frontier-evals/project/evmbench/evmbench/nano/solver.py",
+    "?? artifacts/"
+  ],
+  "credential_files_excluded": [
+    "backend/.env"
+  ],
+  "docker_version": "20.10.17",
+  "docker_compose_version": "2.6.1",
+  "host": {
+    "os": "macOS 26.5.2 (25F84)",
+    "architecture": "arm64"
+  },
+  "worker_images": [
+    {
+      "name": "2024-01-renft",
+      "image_id": "sha256:2ebfbd491feb8f0c95c387997151a521bd6ce6e787321c4955c683c30146e0fe",
+      "architecture": "arm64",
+      "created": "2026-08-07T23:00:54.082203375Z"
+    },
+    {
+      "name": "2024-03-taiko",
+      "image_id": "sha256:1833045bf2c15ce6990a39d14cf9e44d81f6f553cd037c9bbb4c649bb76a6f22",
+      "architecture": "arm64",
+      "created": "2026-08-07T23:14:56.963317085Z"
+    },
+    {
+      "name": "2024-05-arbitrum-foundation",
+      "image_id": "sha256:855b9cd03a57d325aebe3863e2c7a425f78d1214e3eb85c97e3363b9a3bd9d1a",
+      "architecture": "arm64",
+      "created": "2026-08-07T23:15:30.521229961Z"
+    },
+    {
+      "name": "2024-05-olas",
+      "image_id": "sha256:33e392414aaa905cd3d0f447be220c6ebfae555780880f4fb053e609f75aecff",
+      "architecture": "arm64",
+      "created": "2026-08-07T23:28:07.503370381Z"
+    },
+    {
+      "name": "2024-06-size",
+      "image_id": "sha256:de9f53332a40c52737a49ff2fc09ed767efb13019ed72253932c03e57ebf6a4a",
+      "architecture": "arm64",
+      "created": "2026-08-07T23:20:09.583213882Z"
+    },
+    {
+      "name": "2024-07-basin",
+      "image_id": "sha256:5108ad8b5dd11b68377c2bdec03631bdf5b5c2612dd1cde60278baa697429c2a",
+      "architecture": "arm64",
+      "created": "2026-08-07T23:03:18.807947137Z"
+    },
+    {
+      "name": "2024-07-benddao",
+      "image_id": "sha256:1557e9fbbd4a55c42842291876d22422144acfd6fa84e087f11444066b36ec0c",
+      "architecture": "arm64",
+      "created": "2026-08-07T23:10:49.119755262Z"
+    },
+    {
+      "name": "2024-08-phi",
+      "image_id": "sha256:722f8550b5319ecc1550327f11b0a8994c297dd64f8a5a3d39c91c987949c29d",
+      "architecture": "arm64",
+      "created": "2026-08-07T22:56:21.94514468Z"
+    },
+    {
+      "name": "2024-08-wildcat",
+      "image_id": "sha256:f43b3cae17fd788359e78e0eebba96bcf2ee524d505ed53fa6584d4f776b6c10",
+      "architecture": "arm64",
+      "created": "2026-08-07T23:09:15.936394135Z"
+    },
+    {
+      "name": "2025-05-blackhole",
+      "image_id": "sha256:57ce7b4f5984cd742114606cbc40443ecb37a6886e468e6e981529ea2a6289c1",
+      "architecture": "arm64",
+      "created": "2026-08-07T23:32:28.457236044Z"
+    },
+    {
+      "name": "base",
+      "image_id": "sha256:57803867200bc51c55c2c384dfdc246f9a720efa0d0b35ee265c6b8eecdeb2ef",
+      "architecture": "arm64",
+      "created": "2026-08-07T22:54:05.332740506Z"
+    }
+  ],
+  "codex_version": "codex-cli 0.98.0"
+}
