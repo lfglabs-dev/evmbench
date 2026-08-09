@@ -122,6 +122,22 @@ uv run python -m evmbench.nano.entrypoint \
 
 To add a new agent, see `evmbench/agents` (each agent has a `config.yaml` + a `start.sh`).
 
+### Run a free-skill condition through the local sandbox
+
+When the repository's local `oai-proxy` is running with its static provider
+credential, use the sandbox launcher to run a raw baseline or one compatible
+free skill. The runner fetches the selected public skill into the gitignored
+`.context/evmbench-free-skills/` cache and installs it in every audit worker.
+
+```bash
+./scripts/run_free_skill_benchmark.sh --list
+./scripts/run_free_skill_benchmark.sh cyfrin-solidity
+```
+
+Run each condition in a separate worktree so results remain attributable. See
+[`docs/free-skill-benchmark-prompts.md`](docs/free-skill-benchmark-prompts.md)
+for copy-ready Conductor prompts and the comparable condition list.
+
 ### Results and logs
 
 By default, outputs go under `project/evmbench/runs/`. Each invocation creates a run-group directory containing `group.log`, and per-audit run log files.
