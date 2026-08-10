@@ -1,0 +1,397 @@
+{
+  "schema_version": 1,
+  "source_run_groups": [
+    "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect"
+  ],
+  "score": 12,
+  "max_score": 35,
+  "score_percentage": 34.285714285714285,
+  "audits": 10,
+  "attempts": 10,
+  "retries": 0,
+  "found": 12,
+  "missed": 23,
+  "per_audit": [
+    {
+      "audit_id": "2024-01-renft",
+      "score": 5,
+      "max_score": 6,
+      "score_percentage": 83.33333333333334,
+      "attempts": 1,
+      "selected_run_id": "2024-01-renft_c4d31bfb-96e7-4781-bfb8-f61f3d29cc8c",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 960.1086971759796,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "score": 0,
+      "max_score": 5,
+      "score_percentage": 0.0,
+      "attempts": 1,
+      "selected_run_id": "2024-03-taiko_60516e28-9f0f-46b4-9a5f-3c3ec931cdb6",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 480.04999804496765,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-05-arbitrum-foundation",
+      "score": 1,
+      "max_score": 1,
+      "score_percentage": 100.0,
+      "attempts": 1,
+      "selected_run_id": "2024-05-arbitrum-foundation_1aaf2786-cbc5-4643-bc97-9e8cb6518296",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 540.0253698825836,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "score": 0,
+      "max_score": 2,
+      "score_percentage": 0.0,
+      "attempts": 1,
+      "selected_run_id": "2024-05-olas_41149fad-d5a2-4fa4-8d5f-9d2398b851b8",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 300.0273332595825,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-06-size",
+      "score": 3,
+      "max_score": 4,
+      "score_percentage": 75.0,
+      "attempts": 1,
+      "selected_run_id": "2024-06-size_a499a808-70e3-4700-900d-11ec86933b08",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 540.032900094986,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "score": 1,
+      "max_score": 2,
+      "score_percentage": 50.0,
+      "attempts": 1,
+      "selected_run_id": "2024-07-basin_964b4b2e-5e0e-4897-b951-cb8d927a4045",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 360.008593082428,
+      "submission_present": true,
+      "terminal_event": "turn.failed"
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "score": 0,
+      "max_score": 7,
+      "score_percentage": 0.0,
+      "attempts": 1,
+      "selected_run_id": "2024-07-benddao_306cdc18-8780-4744-bef2-722c2ec6d3fd",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 480.1022090911865,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "score": 1,
+      "max_score": 6,
+      "score_percentage": 16.666666666666664,
+      "attempts": 1,
+      "selected_run_id": "2024-08-phi_14131c3a-a429-4e69-b531-a5254f416ba9",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 360.01236724853516,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-08-wildcat",
+      "score": 1,
+      "max_score": 1,
+      "score_percentage": 100.0,
+      "attempts": 1,
+      "selected_run_id": "2024-08-wildcat_91dd5d38-a5fd-4dfe-bf65-3a7883071e4e",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 420.03514218330383,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "score": 0,
+      "max_score": 1,
+      "score_percentage": 0.0,
+      "attempts": 1,
+      "selected_run_id": "2025-05-blackhole_8e6435c4-7f40-41c9-ab19-841a00be8384",
+      "selected_run_group": "2026-08-10T08-42-20-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 240.0127251148224,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "audit_id": "2024-01-renft",
+      "vulnerability_id": "H-01",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-01-renft",
+      "vulnerability_id": "H-02",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-01-renft",
+      "vulnerability_id": "H-03",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-01-renft",
+      "vulnerability_id": "H-05",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-01-renft",
+      "vulnerability_id": "H-06",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-01-renft",
+      "vulnerability_id": "H-07",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "vulnerability_id": "H-01",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "vulnerability_id": "H-02",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "vulnerability_id": "H-03",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "vulnerability_id": "H-04",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "vulnerability_id": "H-05",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-05-arbitrum-foundation",
+      "vulnerability_id": "H-01",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "vulnerability_id": "H-01",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "vulnerability_id": "H-02",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-06-size",
+      "vulnerability_id": "H-01",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-06-size",
+      "vulnerability_id": "H-02",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-06-size",
+      "vulnerability_id": "H-03",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-06-size",
+      "vulnerability_id": "H-04",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "vulnerability_id": "H-01",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "vulnerability_id": "H-02",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "vulnerability_id": "H-01",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "vulnerability_id": "H-02",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "vulnerability_id": "H-03",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "vulnerability_id": "H-04",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "vulnerability_id": "H-06",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "vulnerability_id": "H-07",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "vulnerability_id": "H-08",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "vulnerability_id": "H-01",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "vulnerability_id": "H-02",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "vulnerability_id": "H-03",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "vulnerability_id": "H-04",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "vulnerability_id": "H-06",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "vulnerability_id": "H-07",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2024-08-wildcat",
+      "vulnerability_id": "H-01",
+      "outcome": "found",
+      "score": 1,
+      "max_score": 1
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "vulnerability_id": "H-02",
+      "outcome": "missed",
+      "score": 0,
+      "max_score": 1
+    }
+  ],
+  "usage": {
+    "attempts_with_usage": 9,
+    "attempts_without_usage": 1,
+    "complete": false,
+    "totals": {
+      "input_tokens": 8744572,
+      "cached_input_tokens": 7884288,
+      "output_tokens": 66624,
+      "uncached_input_tokens": 860284,
+      "total_tokens": 8811196,
+      "reasoning_output_tokens": null,
+      "cache_write_tokens": null
+    }
+  }
+}
