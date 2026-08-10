@@ -302,7 +302,12 @@ def render_markdown(report: Mapping[str, Any], title: str) -> str:
 
 def _csv_text(rows: Iterable[Mapping[str, Any]], fieldnames: Sequence[str]) -> str:
     stream = io.StringIO()
-    writer = csv.DictWriter(stream, fieldnames=fieldnames, extrasaction="ignore")
+    writer = csv.DictWriter(
+        stream,
+        fieldnames=fieldnames,
+        extrasaction="ignore",
+        lineterminator="\n",
+    )
     writer.writeheader()
     writer.writerows(rows)
     return stream.getvalue()
