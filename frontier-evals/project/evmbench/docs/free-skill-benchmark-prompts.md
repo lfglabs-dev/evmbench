@@ -50,5 +50,6 @@ Copy the template once for each of these conditions:
 - `quill-semantic-guard-analysis`
 - `quill-signature-replay-analysis`
 - `quill-state-invariant-detection`
+- `quillshield-hard10-bundle` (all ten comparable QuillShield analysis modules in one skill package)
 
 Cyfrin BattleChain, Pashov Fizz/X-Ray, and QuillShield Defender are excluded: they target deployment, fuzz harnesses, pre-audit readiness, or release gates rather than comparable detect-only vulnerability discovery.

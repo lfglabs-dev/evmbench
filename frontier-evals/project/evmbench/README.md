@@ -132,7 +132,15 @@ free skill. The runner fetches the selected public skill into the gitignored
 ```bash
 ./scripts/run_free_skill_benchmark.sh --list
 ./scripts/run_free_skill_benchmark.sh cyfrin-solidity
+./scripts/run_free_skill_benchmark.sh quillshield-hard10-bundle
 ```
+
+`quillshield-hard10-bundle` materializes the ten comparable QuillShield
+detect-analysis modules as one skill package. The bundle has one root
+`SKILL.md`, with the original module guidance and references retained as
+internal Markdown files; this lets a single audit use the complete methodology.
+The release-focused QuillShield Defender plugin is deliberately excluded because
+it is not comparable to detect-only vulnerability discovery.
 
 Run each condition in a separate worktree so results remain attributable. See
 [`docs/free-skill-benchmark-prompts.md`](docs/free-skill-benchmark-prompts.md)

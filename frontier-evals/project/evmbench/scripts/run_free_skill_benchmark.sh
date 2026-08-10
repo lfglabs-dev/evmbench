@@ -25,6 +25,7 @@ Conditions:
   quill-semantic-guard-analysis
   quill-signature-replay-analysis
   quill-state-invariant-detection
+  quillshield-hard10-bundle
 EOF
 }
 
@@ -54,6 +55,11 @@ case "$condition" in
     skill_name="${condition#quill-}"
     skill_relative_path="plugins/$skill_name/skills/$skill_name"
     ;;
+  quillshield-hard10-bundle)
+    source_url="https://github.com/quillai-network/qs_skills.git"
+    checkout_name="quillshield-skills"
+    skill_relative_path="bundles/hard10"
+    ;;
   *)
     echo "Unknown condition: $condition" >&2
     usage >&2
@@ -68,7 +74,12 @@ if [[ "$condition" != "raw" ]]; then
     git clone --depth 1 "$source_url" "$checkout_path"
   fi
 
-  skill_path="$checkout_path/$skill_relative_path"
+  if [[ "$condition" == "quillshield-hard10-bundle" ]]; then
+    skill_path="$checkout_path/$skill_relative_path"
+    "$eval_dir/scripts/build_quillshield_bundle.sh" "$checkout_path" "$skill_path"
+  else
+    skill_path="$checkout_path/$skill_relative_path"
+  fi
   if [[ ! -f "$skill_path/SKILL.md" ]]; then
     echo "Expected skill package is unavailable: $skill_path" >&2
     exit 1
