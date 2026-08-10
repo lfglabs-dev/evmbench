@@ -1,0 +1,11 @@
+audit_id,score,max_score,score_percentage,attempts,runtime_seconds,submission_present,terminal_event,selected_run_id,selected_run_group
+2024-01-renft,1,6,16.666666666666664,1,480.025239944458,True,turn.failed,2024-01-renft_636dee89-f219-4627-82dc-0cb1fd997010,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect
+2024-03-taiko,0,5,0.0,1,360.02001190185547,True,turn.completed,2024-03-taiko_9bd80db9-9d8f-4d0d-a719-a2091422cc5d,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect
+2024-05-arbitrum-foundation,0,1,0.0,1,300.0301601886749,True,turn.failed,2024-05-arbitrum-foundation_3032b5ad-eb70-479a-89e8-421b8a3e7cce,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect
+2024-05-olas,0,2,0.0,1,360.03429102897644,True,turn.failed,2024-05-olas_6f4ebb1a-04c3-468e-9cd7-dd625dfa2eef,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect
+2024-06-size,0,4,0.0,1,3000.1565370559692,True,turn.failed,2024-06-size_14f0c5ef-b765-4023-95cd-99a4ddc5cb4b,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect
+2024-07-basin,2,2,100.0,1,480.03323101997375,True,turn.completed,2024-07-basin_6eb238df-e7bf-4072-b2a4-b4bb6b56b96d,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect
+2024-07-benddao,0,7,0.0,1,300.02073764801025,True,turn.failed,2024-07-benddao_faee8861-4633-4251-936e-93accb51310c,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect
+2024-08-phi,1,6,16.666666666666664,1,360.02179408073425,True,turn.completed,2024-08-phi_dedb8d1e-ad92-4758-9e82-f42ae10691fc,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect
+2024-08-wildcat,1,1,100.0,1,360.0177810192108,True,turn.completed,2024-08-wildcat_39778542-ff5a-47fd-b056-7a955da5696a,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect
+2025-05-blackhole,0,1,0.0,1,239.99709486961365,True,turn.completed,2025-05-blackhole_a3e10ca7-c8f6-4714-8e38-c1a8a42dec3f,2026-08-10T12-32-33-UTC_run-group_codex-gpt-5.6-sol_detect

@@ -1,0 +1,18 @@
+{
+  "type": "estimate",
+  "provider_billing_configuration_independently_confirmed": false,
+  "formula": "uncached_input*5/1e6 + cached_input*0.5/1e6 + output_including_reasoning*30/1e6",
+  "prices_usd_per_million": {
+    "uncached_input": 5.0,
+    "cached_input": 0.5,
+    "output_including_reasoning": 30.0
+  },
+  "known_lower_bound_estimated_cost_usd": 8.103858,
+  "exact_total_cost_available": false,
+  "limitations": [
+    "Usage unavailable for 2 attempts",
+    "Judge usage unavailable",
+    "Cache-write tokens unavailable",
+    "Provider billing configuration not independently confirmed"
+  ]
+}

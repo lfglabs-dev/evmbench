@@ -1,0 +1,166 @@
+{
+  "workspace_name": "cyfrin-rep-03",
+  "condition": "cyfrin-solidity",
+  "replicate": 3,
+  "git_sha": "96da518d8dc0b4ee0841b7d5f32ab6710a88d1e9",
+  "run_group_path": "/Users/benjaminflores/conductor/workspaces/evmbench/praia/frontier-evals/project/evmbench/runs/free-skills/cyfrin-solidity/2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+  "launcher_exit": 0,
+  "score": 16,
+  "max_score": 35,
+  "found": 16,
+  "missed": 19,
+  "per_audit": [
+    {
+      "audit_id": "2024-01-renft",
+      "score": 6,
+      "max_score": 6,
+      "score_percentage": 100.0,
+      "attempts": 1,
+      "selected_run_id": "2024-01-renft_782d775b-3db3-4b80-8194-6f93f39aae5c",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 660.1174380779266,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-03-taiko",
+      "score": 4,
+      "max_score": 5,
+      "score_percentage": 80.0,
+      "attempts": 1,
+      "selected_run_id": "2024-03-taiko_c3db5c37-efdc-4b0e-803a-89b0247266a1",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 420.01722598075867,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-05-arbitrum-foundation",
+      "score": 0,
+      "max_score": 1,
+      "score_percentage": 0.0,
+      "attempts": 1,
+      "selected_run_id": "2024-05-arbitrum-foundation_611446c2-7523-45ad-9dee-0b8d91055526",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 240.06761384010315,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-05-olas",
+      "score": 0,
+      "max_score": 2,
+      "score_percentage": 0.0,
+      "attempts": 1,
+      "selected_run_id": "2024-05-olas_d9d79047-c459-4be5-92d5-b6e8000af20b",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 300.0170826911926,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-06-size",
+      "score": 1,
+      "max_score": 4,
+      "score_percentage": 25.0,
+      "attempts": 1,
+      "selected_run_id": "2024-06-size_ca1e31f1-6e49-4bb7-b7b6-13844cfe20aa",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 360.01977133750916,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-07-basin",
+      "score": 2,
+      "max_score": 2,
+      "score_percentage": 100.0,
+      "attempts": 1,
+      "selected_run_id": "2024-07-basin_faea9ed5-df8c-4231-a49e-51028f9b71a3",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 360.0193428993225,
+      "submission_present": true,
+      "terminal_event": "turn.failed"
+    },
+    {
+      "audit_id": "2024-07-benddao",
+      "score": 1,
+      "max_score": 7,
+      "score_percentage": 14.285714285714285,
+      "attempts": 1,
+      "selected_run_id": "2024-07-benddao_1a0497de-0b8d-43ec-aa2a-c2e53d267b2f",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 240.0129919052124,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "score": 0,
+      "max_score": 6,
+      "score_percentage": 0.0,
+      "attempts": 1,
+      "selected_run_id": "2024-08-phi_605da299-64a3-48f9-a060-0ea4ba7b33b5",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 300.0540339946747,
+      "submission_present": true,
+      "terminal_event": "turn.failed"
+    },
+    {
+      "audit_id": "2024-08-wildcat",
+      "score": 1,
+      "max_score": 1,
+      "score_percentage": 100.0,
+      "attempts": 1,
+      "selected_run_id": "2024-08-wildcat_3b3dc2fb-1ce8-4385-969f-1acb4f0d8f5b",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 600.0736901760101,
+      "submission_present": true,
+      "terminal_event": "turn.completed"
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "score": 1,
+      "max_score": 1,
+      "score_percentage": 100.0,
+      "attempts": 1,
+      "selected_run_id": "2025-05-blackhole_56f7ff60-bca6-4533-ad41-f15acc182359",
+      "selected_run_group": "2026-08-10T11-58-15-UTC_run-group_codex-gpt-5.6-sol_detect",
+      "runtime_seconds": 300.01496291160583,
+      "submission_present": true,
+      "terminal_event": "turn.failed"
+    }
+  ],
+  "terminal_failures": [
+    {
+      "audit_id": "2024-07-basin",
+      "terminal_event": "turn.failed",
+      "submission_present": true
+    },
+    {
+      "audit_id": "2024-08-phi",
+      "terminal_event": "turn.failed",
+      "submission_present": true
+    },
+    {
+      "audit_id": "2025-05-blackhole",
+      "terminal_event": "turn.failed",
+      "submission_present": true
+    }
+  ],
+  "attempts": 10,
+  "attempts_with_usage": 7,
+  "attempts_without_usage": 3,
+  "token_totals": {
+    "input_tokens": 7466873,
+    "cached_input_tokens": 6834688,
+    "output_tokens": 53761,
+    "uncached_input_tokens": 632185,
+    "total_tokens": 7520634,
+    "reasoning_output_tokens": null,
+    "cache_write_tokens": null
+  },
+  "known_lower_bound_estimated_cost_usd": 8.191099,
+  "cost_per_found_vulnerability_usd": 0.5119436875,
+  "report_directory_path": "/Users/benjaminflores/conductor/workspaces/evmbench/praia/frontier-evals/project/evmbench/reports/cyfrin-solidity-hard10-rep-03"
+}
