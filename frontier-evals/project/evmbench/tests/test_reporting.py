@@ -131,6 +131,8 @@ def test_write_report_creates_clean_bundle_and_requires_force(tmp_path: Path) ->
         "vulnerabilities.csv",
     ]
     assert "Score: 1/1" in (output / "README.md").read_text()
+    assert b"\r" not in (output / "per_audit.csv").read_bytes()
+    assert b"\r" not in (output / "vulnerabilities.csv").read_bytes()
     with pytest.raises(FileExistsError):
         write_report(output, report, title="Example", force=False)
     write_report(output, report, title="Updated", force=True)

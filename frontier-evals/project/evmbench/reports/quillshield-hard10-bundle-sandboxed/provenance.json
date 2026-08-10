@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "condition": "quillshield-hard10-bundle",
+  "bundle_kind": "EVMbench-built detect-only comparison bundle",
+  "upstream": {
+    "repository": "https://github.com/quillai-network/qs_skills.git",
+    "commit": "8bdd3c058704cd855ce29b8e2385708b59152606"
+  },
+  "materialized_bundle": {
+    "root_skill_sha256": "e7071ad4333736a4c3339895525ab4432842aba46898ca907d04497fd3439a18",
+    "complete_bundle_sha256": "6b8fa00be7170ed00f6e0fe3224b96433a88e4f67104c6f8ca2851795a539576",
+    "complete_bundle_hash_method": "SHA-256 of the lexicographically sorted SHA-256 records for every regular file, using paths relative to the bundle root.",
+    "included_modules": [
+      "behavioral-state-analysis",
+      "dos-griefing-analysis",
+      "external-call-safety",
+      "input-arithmetic-safety",
+      "oracle-flashloan-analysis",
+      "proxy-upgrade-safety",
+      "reentrancy-pattern-analysis",
+      "semantic-guard-analysis",
+      "signature-replay-analysis",
+      "state-invariant-detection"
+    ],
+    "excluded_module": "defender",
+    "exclusion_reason": "Release-gate and CI-readiness guidance is not comparable to detect-only vulnerability discovery."
+  },
+  "evaluation": {
+    "source_run_group": "2026-08-10T10-05-06-UTC_run-group_codex-gpt-5.6-sol_detect",
+    "repository_commit": "b43fba27d4ac051737821a6bcb0fd56320e47845",
+    "agent_id": "codex-gpt-5.6-sol",
+    "judge_model": "gpt-5.6-sol",
+    "judge_reasoning_effort": "low",
+    "mode": "detect",
+    "audit_split": "detect-tasks",
+    "attempts_per_audit": 1,
+    "concurrency": 2
+  }
+}
