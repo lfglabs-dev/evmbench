@@ -29,7 +29,7 @@ pyperclip==1.9.0
 pytest-asyncio==0.25.0
 pytest-playwright==0.6.2
 pyyaml
-pypdf==5.1.0
+pypdf==6.21.4
 pusher==3.3.2
 reportlab==4.2.5
 requests==2.32.3
