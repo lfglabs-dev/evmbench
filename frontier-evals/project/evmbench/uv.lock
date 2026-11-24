@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 5
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -847,11 +847,11 @@ dependencies = [
     { name = "compatibility-api" },
     { name = "docker" },
     { name = "matplotlib" },
-    { name = "preparedness-turn-completer" },
     { name = "nanoeval" },
     { name = "nanoeval-alcatraz" },
     { name = "openai" },
     { name = "pre-commit" },
+    { name = "preparedness-turn-completer" },
     { name = "pytest-asyncio" },
     { name = "pytest-html" },
     { name = "python-dateutil" },
@@ -881,11 +881,11 @@ requires-dist = [
     { name = "compatibility-api", editable = "../common/compatibility_api" },
     { name = "docker", specifier = ">=7.1.0" },
     { name = "matplotlib", specifier = ">=3.10.0" },
-    { name = "preparedness-turn-completer", editable = "../common/preparedness_turn_completer" },
     { name = "nanoeval", editable = "../common/nanoeval" },
     { name = "nanoeval-alcatraz", editable = "../common/nanoeval_alcatraz" },
     { name = "openai", specifier = ">=1.97.0" },
     { name = "pre-commit", specifier = ">=4.1.0" },
+    { name = "preparedness-turn-completer", editable = "../common/preparedness_turn_completer" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-html", specifier = ">=4.1.1" },
     { name = "python-dateutil", specifier = ">=2.9.0" },
@@ -1072,14 +1072,14 @@ wheels = [
 
 [[package]]
 name = "gitpython"
-version = "3.1.44"
+version = "3.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "gitdb" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c0/89/37df0b71473153574a5cdef8f242de422a0f5d26d7a9e231e6f169b4ad14/gitpython-3.1.44.tar.gz", hash = "sha256:c87e30b26253bf5418b01b0660f818967f3c503193838337fe5e573331249269", size = 214196, upload-time = "2025-01-02T07:32:43.59Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c0/ff/fee293f1ec3e1b64db6eb270e00964f29c086d769201474cedb8d1608930/gitpython-3.2.1.tar.gz", hash = "sha256:0f1229ec5c057bdabdeeda8bda4f17bda679ab33dbccc00f24e6a480553c8613", size = 241688, upload-time = "2026-10-14T12:20:20.589Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1d/9a/4114a9057db2f1462d5c8f8390ab7383925fe1ac012eaa42402ad65c2963/GitPython-3.1.44-py3-none-any.whl", hash = "sha256:9e0e10cda9bed1ee64bc9a6de50e7e38a9c9943241cd7f585f6df3ed28011110", size = 207599, upload-time = "2025-01-02T07:32:40.731Z" },
+    { url = "https://files.pythonhosted.org/packages/6b/50/2a923c4dc02522ff9567f07c67ed1deca6d5fa9474f4708168b8088dfa37/gitpython-3.2.1-py3-none-any.whl", hash = "sha256:d66b0832aa8755c1a84892937282df0befb16c97e5a64aeebd68be9c5e323f53", size = 231548, upload-time = "2026-10-14T12:20:18.844Z" },
 ]
 
 [[package]]
@@ -1701,37 +1701,6 @@ wheels = [
 ]
 
 [[package]]
-name = "preparedness-turn-completer"
-version = "0.1.0"
-source = { editable = "../common/preparedness_turn_completer" }
-dependencies = [
-    { name = "chz" },
-    { name = "openai" },
-    { name = "structlog" },
-    { name = "tenacity" },
-    { name = "tiktoken" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "chz" },
-    { name = "openai", specifier = "==1.99.9" },
-    { name = "structlog" },
-    { name = "tenacity" },
-    { name = "tiktoken" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "mypy", specifier = ">=1.15.0" },
-    { name = "poethepoet", specifier = ">=0.34.0" },
-    { name = "pre-commit", specifier = ">=4.2.0" },
-    { name = "pytest", specifier = ">=8.4.1" },
-    { name = "pytest-xdist", extras = ["psutil"], specifier = ">=3.8.0" },
-    { name = "ruff", specifier = ">=0.11.10" },
-]
-
-[[package]]
 name = "more-itertools"
 version = "10.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2277,6 +2246,37 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/08/39/679ca9b26c7bb2999ff122d50faa301e49af82ca9c066ec061cfbc0c6784/pre_commit-4.2.0.tar.gz", hash = "sha256:601283b9757afd87d40c4c4a9b2b5de9637a8ea02eaff7adc2d0fb4e04841146", size = 193424, upload-time = "2025-03-18T21:35:20.987Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/88/74/a88bf1b1efeae488a0c0b7bdf71429c313722d1fc0f377537fbe554e6180/pre_commit-4.2.0-py2.py3-none-any.whl", hash = "sha256:a009ca7205f1eb497d10b845e52c838a98b6cdd2102a6c8e4540e94ee75c58bd", size = 220707, upload-time = "2025-03-18T21:35:19.343Z" },
+]
+
+[[package]]
+name = "preparedness-turn-completer"
+version = "0.1.0"
+source = { editable = "../common/preparedness_turn_completer" }
+dependencies = [
+    { name = "chz" },
+    { name = "openai" },
+    { name = "structlog" },
+    { name = "tenacity" },
+    { name = "tiktoken" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "chz" },
+    { name = "openai", specifier = "==1.99.9" },
+    { name = "structlog" },
+    { name = "tenacity" },
+    { name = "tiktoken" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy", specifier = ">=1.15.0" },
+    { name = "poethepoet", specifier = ">=0.34.0" },
+    { name = "pre-commit", specifier = ">=4.2.0" },
+    { name = "pytest", specifier = ">=8.4.1" },
+    { name = "pytest-xdist", extras = ["psutil"], specifier = ">=3.8.0" },
+    { name = "ruff", specifier = ">=0.11.10" },
 ]
 
 [[package]]
